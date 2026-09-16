@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#012F51">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Road to 10k">
+<meta name="description" content="Instagram content calendar, post log and growth tracker for @mattwade_____. Data stays on this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>Road to 10k</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+html{color-scheme:light dark}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{
+  --bg:#F4F8FB; --surface:#FFFFFF; --surface2:#E9F1F7; --line:#CBDCE8;
+  --ink:#012F51; --ink2:#3B5A73; --muted:#6E8AA0;
+  --accent:#1A7FB0; --accent-ink:#FFFFFF; --accent-soft:#D6ECF7;
+  --good:#2E8B57; --good-soft:#DDF2E5; --warn:#B8780A; --warn-soft:#F7EBD2; --bad:#C24A62; --bad-soft:#F8DEE4;
+  --p1:#1A7FB0; --p2:#4A9A3A; --p3:#7A5AD6; --p4:#C24A62; --p5:#B8780A;
+  --shadow:0 1px 2px rgba(1,47,81,.06),0 6px 20px rgba(1,47,81,.08);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#012F51; --surface:#063A5F; --surface2:#0B4670; --line:#1E5A85;
+    --ink:#FFFFFF; --ink2:#C9E2F0; --muted:#9CC4DA;
+    --accent:#66CDF0; --accent-ink:#012F51; --accent-soft:#0F4E78;
+    --good:#4FBF7A; --good-soft:#0F4A36; --warn:#E3A93C; --warn-soft:#4A3A12; --bad:#F07A93; --bad-soft:#5A2233;
+    --p1:#2E9FD0; --p2:#3FA05C; --p3:#8A6FE0; --p4:#C9506B; --p5:#B8801A;
+    --shadow:0 1px 2px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#012F51; --surface:#063A5F; --surface2:#0B4670; --line:#1E5A85;
+  --ink:#FFFFFF; --ink2:#C9E2F0; --muted:#9CC4DA;
+  --accent:#66CDF0; --accent-ink:#012F51; --accent-soft:#0F4E78;
+  --good:#4FBF7A; --good-soft:#0F4A36; --warn:#E3A93C; --warn-soft:#4A3A12; --bad:#F07A93; --bad-soft:#5A2233;
+  --p1:#2E9FD0; --p2:#3FA05C; --p3:#8A6FE0; --p4:#C9506B; --p5:#B8801A;
+  --shadow:0 1px 2px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:820px;margin:0 auto;padding-inline:16px;padding-block:0 96px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:10px 8px}
+header.top .row{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:820px;margin:0 auto;padding-inline:16px}
+.brand{display:flex;flex-direction:column;gap:0}
+.brand .h{font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand .s{font-size:12px;color:var(--muted)}
+.streak{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);font-size:13px;font-weight:600;white-space:nowrap}
+.streak .n{font-size:20px;font-weight:700;line-height:1}
+.streak.ok .n{color:var(--good)} .streak.broken{background:var(--bad-soft);border-color:var(--bad)} .streak.broken .n{color:var(--bad)}
+.streak.zero .n{color:var(--muted)}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 10px;font-weight:600}
+h3{font-size:16px;margin:0 0 6px;font-weight:600;text-wrap:balance}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.card + .card{margin-top:10px}
+.today{border-left:4px solid var(--accent)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.tile .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.tile .v{font-size:26px;font-weight:700;line-height:1.1;margin-top:4px}
+.tile .d{font-size:12px;color:var(--ink2);margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.02em;border:1px solid transparent;white-space:nowrap}
+.chip.PLANNED{background:transparent;border-color:var(--line);color:var(--ink2)}
+.chip.FILMED{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.chip.POSTED{background:var(--good-soft);color:var(--good)}
+.chip.SKIPPED{background:var(--bad-soft);color:var(--bad)}
+.chip.EVERGREEN{background:var(--surface2);color:var(--ink2)}
+.chip.TOPICAL{background:var(--warn-soft);color:var(--warn)}
+.chip.fmt{background:var(--surface2);color:var(--ink)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.p1{background:var(--p1)} .p2{background:var(--p2)} .p3{background:var(--p3)} .p4{background:var(--p4)} .p5{background:var(--p5)}
+.slot{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.slot:first-of-type{border-top:0;padding-top:4px}
+.slot .when{display:flex;flex-direction:column;align-items:center;gap:1px;padding-top:2px}
+.slot .when .d{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.slot .when .n{font-size:20px;font-weight:700;line-height:1}
+.slot .when .t{font-size:11px;color:var(--muted)}
+.slot .body{min-width:0}
+.slot .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:4px}
+.slot .title{font-weight:600;font-size:15px}
+.slot .hook{font-size:13.5px;color:var(--ink2);margin-top:2px}
+.slot .act{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.score{min-width:40px;text-align:center;padding:4px 8px;border-radius:8px;font-weight:700;font-size:14px}
+.score.good{background:var(--good-soft);color:var(--good)} .score.mid{background:var(--warn-soft);color:var(--warn)} .score.poor{background:var(--bad-soft);color:var(--bad)} .score.na{background:var(--surface2);color:var(--muted);font-weight:500;font-size:12px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.small{padding:5px 9px;font-size:12px}
+.btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.weeknav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 6px}
+.weeknav .wk{font-weight:700;font-size:16px}
+.weeknav .rng{font-size:12px;color:var(--muted)}
+.progress{height:8px;border-radius:999px;background:var(--surface2);overflow:hidden;margin:8px 0 4px}
+.progress i{display:block;height:100%;background:var(--good);border-radius:999px}
+.progress i.short{background:var(--warn)}
+.storyline{font-size:13.5px;color:var(--ink2);white-space:pre-line}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-around}
+.tab{flex:1;background:none;border:0;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--muted);border-radius:10px}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected="true"]{color:var(--accent)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:13px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:top}
+th{position:sticky;top:0;background:var(--surface2);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);cursor:pointer;user-select:none}
+th.on{color:var(--accent)}
+td.hookcell{white-space:normal;min-width:220px;max-width:340px}
+tr.rowgood td:first-child{box-shadow:inset 4px 0 0 var(--good)} tr.rowmid td:first-child{box-shadow:inset 4px 0 0 var(--warn)} tr.rowpoor td:first-child{box-shadow:inset 4px 0 0 var(--bad)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}
+.filters select,.filters input{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 10px;font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink2);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+svg.chart{width:100%;height:auto;display:block;touch-action:none}
+svg.chart text{fill:var(--muted);font-size:10px;font-family:inherit}
+svg.chart .grid{stroke:var(--line);stroke-width:1}
+svg.chart .pace{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg.chart .line{stroke:var(--accent);stroke-width:2;fill:none}
+svg.chart .area{fill:var(--accent);opacity:.12}
+svg.chart .pt{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+svg.chart .pt.last{r:5}
+svg.chart .goal{stroke:var(--good);stroke-width:1.5;stroke-dasharray:2 4}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 8px;border-radius:8px;transform:translate(-50%,-120%);white-space:nowrap;display:none}
+.chartbox{position:relative}
+.bar{display:grid;grid-template-columns:110px 1fr 56px;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.bar:first-child{border-top:0}
+.bar .track{height:10px;border-radius:999px;background:var(--surface2);overflow:hidden}
+.bar .track i{display:block;height:100%;border-radius:999px}
+.bar .lab{display:flex;align-items:center;gap:7px;font-weight:600}
+.bar .val{text-align:right;font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.hookrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.hookrow:first-child{border-top:0}
+.hookrow .h{font-weight:500;font-size:14px}
+.hookrow .m{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.tag{font-size:11px;padding:2px 7px;border-radius:6px;background:var(--surface2);color:var(--ink2)}
+.sheet-bg{position:fixed;inset:0;background:rgba(1,20,35,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet h3{font-size:17px}
+.sheet .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.field label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 10px;font-size:15px;width:100%}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.statusbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.statusbtns button{border-radius:999px;padding:7px 12px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600}
+.statusbtns button[aria-pressed="true"].PLANNED{border-color:var(--ink2);color:var(--ink)}
+.statusbtns button[aria-pressed="true"].FILMED{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.statusbtns button[aria-pressed="true"].POSTED{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.statusbtns button[aria-pressed="true"].SKIPPED{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.sheet .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:999px;font-size:13px;z-index:30;box-shadow:var(--shadow)}
+.conn{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.conn i{width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block}
+.conn.on i{background:var(--good)} .conn.off i{background:var(--bad)}
+.review{border-left:4px solid var(--warn)}
+.review .one{font-weight:600;font-size:15px}
+.moments{font-size:13px}
+.moments div{display:grid;grid-template-columns:78px 1fr;gap:8px;padding:6px 0;border-top:1px solid var(--line)}
+.moments div:first-child{border-top:0}
+.moments .dt{color:var(--muted);font-weight:600}
+.themes .card{padding:12px 14px}
+.themes .wk{font-weight:700;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.small{font-size:12.5px;color:var(--muted)}
+.empty{color:var(--muted);font-size:13.5px;padding:10px 0}
+@media (prefers-reduced-motion: no-preference){ .sheet{animation:up .22s ease-out} @keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="row">
+    <div class="brand">
+      <div class="h">Road to 10k</div>
+      <div class="s"><span id="handle"></span> &middot; <span id="followersHead" class="num"></span> followers &middot; <span class="conn" id="conn"><i></i><span>connecting</span></span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><button class="btn small" id="dataBtn" aria-label="Backup and sync" title="Backup and sync">Sync</button>
+    <div class="streak zero" id="streak" title="Consecutive weeks hitting 8 posts">
+      <span class="n num" id="streakN">0</span>
+      <span id="streakL">week streak</span>
+    </div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="tab-week"></section>
+  <section id="tab-log" hidden></section>
+  <section id="tab-growth" hidden></section>
+  <section id="tab-pillars" hidden></section>
+  <section id="tab-hooks" hidden></section>
+</main>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button class="tab" role="tab" data-tab="week" aria-selected="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>This week</button>
+  <button class="tab" role="tab" data-tab="log" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Log</button>
+  <button class="tab" role="tab" data-tab="growth" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Growth</button>
+  <button class="tab" role="tab" data-tab="pillars" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>Pillars</button>
+  <button class="tab" role="tab" data-tab="hooks" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3v10a4 4 0 1 1-4-4"/><path d="M12 3c3 0 5 2 5 4"/></svg>Hooks</button>
+</nav>
+
+<script id="plan" type="application/json">{"settings": {"handle": "@mattwade_____", "startFollowers": 742, "startDate": "2026-09-14", "goal": 10000, "goalDate": "2027-09-14", "batchDay": "Wednesday", "weekRuns": "Wednesday to Tuesday, aligned to batch day", "postsPerWeek": 8, "reviewDay": "Sunday 6pm", "timezone": "Australia/Sydney", "scoreFormula": "Composite of reach, share rate, save rate, follow rate and engagement rate, each divided by the trailing 20-post median for the same format. Score = 50 + 25 x log2(composite), clamped 1 to 100. Under 8 logged posts the score is provisional.", "pillars": [{"n": 1, "name": "Economics behind the market", "short": "Economics", "desc": "The economics behind the property market and what it means for one client. RBA, prices, lending data, policy. Commentary with a client implication."}, {"n": 2, "name": "The Number", "short": "The Number", "desc": "Hard figures on screen. One number, one reveal. Deposit needed, income required, what HECS costs in capacity. The growth engine: people send these to their partner. 7 to 15 second reels work here."}, {"n": 3, "name": "What the bank won't say", "short": "Bank Won't Say", "desc": "Loyalty tax, the reprice you didn't get, pre-approval that isn't approval, the calculator that lied, the structure that suits the bank. Antagonist content. Highest reach, most shares."}, {"n": 4, "name": "Deal breakdowns", "short": "Deals", "desc": "Wins and learnings from real files, de-identified, told for clients not industry peers. Credibility, and it speaks to the target market's actual problem."}, {"n": 5, "name": "My journey as a broker", "short": "Journey", "desc": "Behind the scenes, day in the life, wins and learnings, the 10k build in public. Vulnerable and relatable. Carries most Stories."}], "audience": "Young professionals 25 to 35, white collar or business owners. First home buyers, investors, rentvestors, self-employed and complex lending, HNW.", "pillarSource": "Matt's brief, C:/Users/matth/OneDrive/Documents/CONTENT/You are my personal Social Media St.txt (14 Sep 2026)"}, "weeks": [{"id": "W1", "n": 1, "start": "2026-09-16", "end": "2026-09-22", "theme": "Launch. The mortgage war, negative gearing leaves the calculator, and the 10k commitment in public.", "batch": "2026-09-16", "notes": "Soft launch. The system landed Wednesday evening, so no batch was filmed on 16 Sep. W1-01 skipped (deliberate). The four carousels need no camera and ship as planned. The three remaining reels film in a 45-minute sitting Thu or Fri morning, or roll into the 23 Sep batch. Streak counts from week 2."}, {"id": "W2", "n": 2, "start": "2026-09-23", "end": "2026-09-29", "theme": "RBA week. Investors leaving the field, the DTI cap, and a live decision react on Tuesday 29 Sep.", "batch": "2026-09-23", "notes": "NSW school holidays start Sat 26 Sep. RBA decision Tue 29 Sep 2:30pm, 15-minute filming window 2:45 to 3:00pm. First Sunday review runs 27 Sep on Week 1."}, {"id": "W3", "n": 3, "start": "2026-09-30", "end": "2026-10-06", "theme": "Aftermath and structure. RBA pass-through, the Cotality September print, leverage philosophy, first numbers in public.", "batch": "2026-09-30", "notes": "Cotality print expected Thu 1 Oct (pattern, unconfirmed). Daylight saving starts Sun 4 Oct. Labour Day public holiday Mon 5 Oct, school holidays all week. Expect softer weekday reach."}, {"id": "W4", "n": 4, "start": "2026-10-07", "end": "2026-10-13", "theme": "Who funds you and what the bank tests. Rents at a third of income, the buffer, non-bank funding, a deal that nearly died.", "batch": "2026-10-07", "notes": "Term 4 starts Tue 13 Oct. RBA September minutes Tue 13 Oct. Affordability stat in W4-07 must be verified to a primary source before it posts."}, {"id": "W5", "n": 5, "start": "2026-10-14", "end": "2026-10-20", "theme": "Structure month. Ring-fencing, offset stacking, the 10-year question. Tax return deadline approaching for self-employed borrowers.", "batch": "2026-10-14", "notes": "Spring auction volumes climbing. RBA Deputy Governor speech Wed 21 Oct falls in W6."}, {"id": "W6", "n": 6, "start": "2026-10-21", "end": "2026-10-27", "theme": "Tax time collides with borrowing. 31 Oct lodgement deadline, why your accountant and your broker should talk, Q3 CPI late October sets up the November RBA.", "batch": "2026-10-21", "notes": "ATO self-lodger deadline Sat 31 Oct sits in W7. Q3 CPI release late Oct (confirm exact date in W5 review)."}, {"id": "W7", "n": 7, "start": "2026-10-28", "end": "2026-11-03", "theme": "Cup Day rates. Westpac results Mon 2 Nov, Cotality October print, RBA decision and Statement on Monetary Policy Tue 3 Nov, Melbourne Cup same day.", "batch": "2026-10-28", "notes": "Triple topical day Tue 3 Nov. Hold two reel slots open. Do not name Westpac in anything that comments on conduct or the share price."}, {"id": "W8", "n": 8, "start": "2026-11-04", "end": "2026-11-10", "theme": "Eight weeks in public. NAB results Thu 5 Nov, ANZ Mon 9 Nov, RBA pass-through, first Christmas settlement cut-off warnings, ABS Lending Indicators Wed 11 Nov lands in W9.", "batch": "2026-11-04", "notes": "Milestone post: 8 weeks, the honest numbers, what changed. Start seeding Christmas shutdown content (lender cut-offs typically early December)."}], "moments": [{"date": "2026-09-18", "event": "RBA Governor Bullock, House Economics Committee", "confirmed": true, "use": "Story share with one-line take. Not a slot."}, {"date": "2026-09-22", "event": "Bullock CEDA fireside", "confirmed": true, "use": "Story share if anything quotable on inflation."}, {"date": "2026-09-25", "event": "NSW Term 3 ends. Spring school holidays 28 Sep to 9 Oct", "confirmed": true, "use": "Confounder. Softer weekday reach for two weeks."}, {"date": "2026-09-29", "event": "RBA cash rate decision, 2:30pm AEST", "confirmed": true, "use": "Slot W2-08. Markets pricing a rise. Scenario framing only."}, {"date": "2026-10-01", "event": "Cotality Home Value Index, September print", "confirmed": false, "use": "Slot W3-02. Date follows the first-business-day pattern, confirm on the day."}, {"date": "2026-10-01", "event": "RBA Financial Stability Review", "confirmed": true, "use": "Story share. Private credit and household stress commentary."}, {"date": "2026-10-04", "event": "Daylight saving starts NSW, 2am", "confirmed": true, "use": "Scheduled task times are local, no change needed. Confounder for Sunday posting."}, {"date": "2026-10-05", "event": "Labour Day public holiday NSW", "confirmed": true, "use": "Confounder for W3-06 and W3-07."}, {"date": "2026-10-13", "event": "RBA September minutes. NSW Term 4 starts", "confirmed": true, "use": "Story share."}, {"date": "2026-10-21", "event": "RBA Deputy Governor Hauser, Citi conference", "confirmed": true, "use": "Story share."}, {"date": "2026-10-31", "event": "ATO self-lodger tax return deadline", "confirmed": true, "use": "W6 theme. Self-employed borrowing power and the returns you lodge."}, {"date": "2026-11-02", "event": "Westpac FY26 results. Cotality October print (pattern)", "confirmed": true, "use": "W7 topical. Data source only, never a view on the share price."}, {"date": "2026-11-03", "event": "RBA decision plus Statement on Monetary Policy. Melbourne Cup.", "confirmed": true, "use": "W7 live react slot. Cup Day rates angle."}, {"date": "2026-11-05", "event": "NAB FY26 results", "confirmed": true, "use": "W8 topical, data source only."}, {"date": "2026-11-09", "event": "ANZ FY26 results", "confirmed": false, "use": "W8 topical. Secondary source only, confirm."}, {"date": "2026-11-11", "event": "ABS Lending Indicators, September quarter, 11:30am", "confirmed": true, "use": "W9 the-number slot. Now quarterly, no October release."}, {"date": "2026-12-01", "event": "Cotality November print (pattern)", "confirmed": false, "use": "W11 topical."}, {"date": "2026-12-08", "event": "RBA cash rate decision, last for 2026", "confirmed": true, "use": "W12 live react slot."}, {"date": "2026-12-10", "event": "NAB AGM", "confirmed": true, "use": "Story share only."}, {"date": "2026-12-17", "event": "MYEFO expected mid-December (2025 was 17 Dec)", "confirmed": false, "use": "Housing measures if any."}, {"date": "2026-12-18", "event": "NSW summer holidays start. Christmas shutdown period to late January", "confirmed": true, "use": "Pre-record two weeks of evergreen. Lender settlement cut-offs land early December."}, {"date": "2027-02-09", "event": "RBA first decision of 2027", "confirmed": true, "use": "Plan the January evergreen bank around it."}, {"date": "2027-06-01", "event": "HELP indexation date", "confirmed": true, "use": "HECS content in late May 2027."}], "slots": [{"id": "W1-01", "week": "W1", "date": "2026-09-16", "day": "Wed", "time": "12:30", "format": "Reel", "lane": "A", "pillar": 3, "type": "news", "title": "Cutting and raising at the same time", "hook": "Banks are cutting rates two weeks before the RBA might raise them.", "angle": "Dozens of lenders cut variable rates for new customers over the past month (ABC, 14 Sep) while markets price roughly an 80% chance of a rise on 29 Sep. Banks are fighting over a shrinking pool of borrowers, so the discount goes to whoever asks. Existing customers get nothing unless they ask.", "kind": "TOPICAL", "filmWindow": "Films today in the batch. Numbers hold until 29 Sep.", "cta": "Save this for the day after the 29th.", "disclaimer": "scenario", "onScreen": "Cutting for new customers. Raising for everyone.", "status": "SKIPPED", "skipReason": "deliberate", "notes": "System built Wednesday evening, no batch filmed 16 Sep. Angle rolls into the reprice window reel W3-01 and the RBA react W2-08."}, {"id": "W1-02", "week": "W1", "date": "2026-09-17", "day": "Thu", "time": "12:30", "format": "Carousel", "lane": "-", "pillar": 1, "type": "mechanism", "title": "Negative gearing is leaving the calculator", "hook": "Seven lenders cut investor borrowing power by up to 20%. Nobody sent you a letter.", "angle": "Since the Budget quarantined rental losses on established property bought after 12 May 2026 (from 1 July 2027), lenders have started removing the negative gearing add-back from how they assess investors. Same income, same rent, less borrowing. Describe the mechanism, do not name the lenders.", "kind": "TOPICAL", "filmWindow": "Build on batch day. Policy is set, numbers are stable.", "cta": "Send this to anyone bidding on an investment property this spring.", "disclaimer": "tax", "onScreen": ""}, {"id": "W1-03", "week": "W1", "date": "2026-09-18", "day": "Fri", "time": "06:45", "format": "Reel", "lane": "B", "pillar": 4, "type": "mechanism", "title": "The bank's favourite structure", "hook": "The bank's favourite loan structure is the one that costs you the most.", "angle": "Deal breakdown, de-identified composite. A client came in with a home and an investment property on one facility with one bank. Cross-collateralisation ties every property to every loan. Sell one and the bank revalues the lot and can hold the proceeds. We split them: ring-fenced loans keep each property's equity yours. Trade-off: more paperwork, sometimes two sets of fees, and it takes a broker who will do the work.", "kind": "EVERGREEN", "filmWindow": "Not filmed 16 Sep. Film in one 45-minute sitting Thu 17 or Fri 18 morning, or roll into the Wed 23 Sep batch and post in week 2.", "cta": "Save this before your next purchase.", "disclaimer": "general", "onScreen": "One loan, two houses. Guess who benefits."}, {"id": "W1-04", "week": "W1", "date": "2026-09-19", "day": "Sat", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 5, "type": "process", "title": "742 to 10,000, in public", "hook": "742 followers. I'm taking this account to 10,000 in a year, and you get to watch.", "angle": "The commitment post. Where the account is, the goal, the system (4 reels, 4 carousels, one filming day a week), what I will share (real numbers every week, misses included) and what I will never share (client details, rate quotes, advice). Hold me to it.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Follow to watch it happen, or watch it fail.", "disclaimer": "general", "onScreen": ""}, {"id": "W1-05", "week": "W1", "date": "2026-09-20", "day": "Sun", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 1, "type": "correction", "title": "The greedy landlord is mostly fiction", "hook": "Nine in ten property investors own one or two places. The greedy landlord is mostly fiction.", "angle": "ATO data: about 71% of investors hold one property, another 19% hold two. Investor loan numbers fell 8.6% in the June quarter and annual growth collapsed from 19.4% to 2.8%. Most of these people are building a retirement the government has shown it cannot fund. Trade-off: some investors do hoard, and a concession is not a plan.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Share this with someone who blames landlords.", "disclaimer": "tax", "onScreen": ""}, {"id": "W1-06", "week": "W1", "date": "2026-09-21", "day": "Mon", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 3, "type": "contrarian", "title": "Insurance from the person who sets the price", "hook": "Fixing your rate is buying insurance from the person who sets the price.", "angle": "The only one who wins on fixed over a full cycle is the bank. Right now the best fixed rates sit above the best variable, so fixing is a hedge against a rise, not a discount. Name who it is right for: the borrower who genuinely cannot hold a rise. Certainty has a price and that is fine if you know you are paying it.", "kind": "EVERGREEN", "filmWindow": "Not filmed 16 Sep. Film in one 45-minute sitting Thu 17 or Fri 18 morning, or roll into the Wed 23 Sep batch and post in week 2.", "cta": "", "disclaimer": "scenario", "onScreen": "Certainty has a price."}, {"id": "W1-07", "week": "W1", "date": "2026-09-21", "day": "Mon", "time": "17:30", "format": "Carousel", "lane": "-", "pillar": 1, "type": "news", "title": "The dip they waited for is here", "hook": "Sydney is 7.1% off its peak and the buyers who waited for the dip are still waiting.", "angle": "Cotality August: national values down 0.9% in the month, fifth straight fall, 3.6% below the March peak. Sydney down 1.4%, 7.1% below February. 93% of capital city suburbs fell over winter, up from 46% in autumn. Sydney clearance 57.8% versus 77.1% a year ago. Trade-off: borrowing capacity fell too, and nobody rings a bell at the bottom.", "kind": "TOPICAL", "filmWindow": "Build on batch day. Refresh the clearance rate on Sunday 20 Sep before posting.", "cta": "Save this and read it again in March.", "disclaimer": "figures", "onScreen": ""}, {"id": "W1-08", "week": "W1", "date": "2026-09-22", "day": "Tue", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 2, "type": "question", "title": "Does my HECS debt matter?", "hook": "Your HECS debt is costing you more borrowing power than your car loan.", "angle": "Client question this week. Lenders treat the compulsory repayment as a fixed monthly outgoing, scaled to your income band, so a five-figure balance can knock six figures off capacity. New this year: some lenders can ignore a HELP debt that will be cleared within about a year. Trade-off: paying it out of your deposit can leave you short on deposit. It is a trade, not a rule.", "kind": "EVERGREEN", "filmWindow": "Not filmed 16 Sep. Film in one 45-minute sitting Thu 17 or Fri 18 morning, or roll into the Wed 23 Sep batch and post in week 2.", "cta": "Comment HECS and I'll do the long version.", "disclaimer": "figures", "onScreen": "Balance $40k. Capacity gone: six figures."}, {"id": "W2-01", "week": "W2", "date": "2026-09-23", "day": "Wed", "time": "12:30", "format": "Reel", "lane": "A", "pillar": 1, "type": "news", "title": "Investors have left the field", "hook": "Investor lending just fell off a cliff. Here's who that helps.", "angle": "ABS June quarter: investor loan numbers down 8.6%, value down 10.2%, annual growth from 19.4% to 2.8%. First home buyers down only 2.9%. Fewer bidders at the $800k to $1.2m end where investors and first home buyers collide. Trade-off: fewer investors also means fewer new rentals, and rents are already at a record share of income.", "kind": "TOPICAL", "filmWindow": "Films on batch day Wed 23 Sep. Data is a month old and stable.", "cta": "Send this to a first home buyer who thinks they're outbid by investors.", "disclaimer": "figures", "onScreen": "Investor loans: down 8.6%. Growth: 19.4% to 2.8%."}, {"id": "W2-02", "week": "W2", "date": "2026-09-24", "day": "Thu", "time": "12:30", "format": "Carousel", "lane": "-", "pillar": 4, "type": "mechanism", "title": "Rate A versus rate B is the wrong fight", "hook": "A slightly higher rate cost nothing. Waiting another year would have cost the house.", "angle": "Most borrowers do not know non-bank lenders exist. Most brokers default to the big four. The comparison is not rate A versus rate B, it is getting in versus not getting in, and missing 12 to 24 months of growth costs more than a modest rate gap. Composite example, no lender named, no rates. Trade-off: non-banks reprice faster and some have fewer features.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Save this if a bank has said no to you this year.", "disclaimer": "figures", "onScreen": ""}, {"id": "W2-03", "week": "W2", "date": "2026-09-25", "day": "Fri", "time": "06:45", "format": "Reel", "lane": "B", "pillar": 4, "type": "mechanism", "title": "How a bank reads a self-employed borrower", "hook": "Your accountant saved you tax. It might have cost you a house.", "angle": "Deal breakdown, de-identified composite. A business owner on triple his PAYG mate's income was declined because his accountant had minimised taxable income for two years. Two years of returns, the lower-or-average rule, what gets added back (depreciation, one-off costs, interest on debts being refinanced) and what does not. Trade-off: some lenders read 12 months, at a cost. The fix is a conversation between your accountant and your broker before 31 October, not after.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Send this to your accountant. Seriously.", "disclaimer": "tax", "onScreen": "Two years. Lower or average. Add-backs."}, {"id": "W2-04", "week": "W2", "date": "2026-09-26", "day": "Sat", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 5, "type": "process", "title": "Eight posts in ninety minutes", "hook": "I film a week of content in one sitting. Here's the whole system.", "angle": "Behind the scenes of batch day. The shot list, the three shirts, the two takes maximum rule, the phone at the desk, why Wednesday. Photos from the day. Honest about what went wrong on the first one.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Ask me anything about the setup in the comments.", "disclaimer": "general", "onScreen": ""}, {"id": "W2-05", "week": "W2", "date": "2026-09-27", "day": "Sun", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 1, "type": "contrarian", "title": "1,432 homes", "hook": "The government promised 1.2 million homes. Two years in, its flagship fund has built 1,432.", "angle": "The 1.2m target is now forecast to land at the end of 2030, 18 months late. The Housing Australia Future Fund has delivered 1,432 homes in two years. Removing negative gearing does not pour a slab. The constraint is supply and a trades shortage. Trade-off: investors are not blameless everywhere, but the maths of this problem is construction, not tax.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Share this the next time someone says tax is the problem.", "disclaimer": "general", "onScreen": ""}, {"id": "W2-06", "week": "W2", "date": "2026-09-28", "day": "Mon", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 1, "type": "contrarian", "title": "Why I stopped listening to RBA forecasts", "hook": "Tomorrow the RBA decides. Here's why I stopped listening to their forecasts in 2024.", "angle": "In 2021 the RBA said no rise until 2024. The first came in May 2022 and twelve more followed. Borrowers remember. Markets price roughly 80% for a rise tomorrow, and the honest position is to plan for the range, not the point. Never predict the outcome. Trade-off: the RBA is the only game in town and ignoring it entirely is its own mistake.", "kind": "TOPICAL", "filmWindow": "Films on batch day Wed 23 Sep. Re-check market pricing Sunday 27 Sep and re-record the one pricing line if it has moved more than 10 points.", "cta": "", "disclaimer": "scenario", "onScreen": "Plan for the range, not the point."}, {"id": "W2-07", "week": "W2", "date": "2026-09-28", "day": "Mon", "time": "17:30", "format": "Carousel", "lane": "-", "pillar": 2, "type": "mechanism", "title": "The number on your file that kills the deal", "hook": "There's a number on your file that can kill the deal before the rate matters.", "angle": "APRA's debt-to-income cap has been live since February: lenders can write no more than 20% of new loans at six times income or more. Total debt includes the new loan, cards, car, HECS. Household income $150k means roughly $900k of total debt before you are in the capped bucket. Who it hits first: investors on their second and third loan. Trade-off: it is a cap on the lender's book, not a hard no to you, and a good broker knows which lenders have room.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Save this. You'll want it before your next purchase.", "disclaimer": "figures", "onScreen": ""}, {"id": "W2-08", "week": "W2", "date": "2026-09-29", "day": "Tue", "time": "15:15", "format": "Reel", "lane": "A", "pillar": 1, "type": "news", "title": "RBA decision react", "hook": "VARIANT A (rise): They raised. Here's the one thing that changes for you today. VARIANT B (hold): They held. Don't read that as the top.", "angle": "Live react, filmed 2:45 to 3:00pm after the 2:30pm decision. Both scripts pre-written in the shot list. Angle for either outcome: what it changes for someone with a settlement in the next 90 days. Your capacity is tested at the rate plus a 3% buffer, so a quarter-point move shifts borrowing power by roughly 2 to 3% (illustrative). Never a rate, never a product.", "kind": "TOPICAL", "filmWindow": "Tue 29 Sep, 2:45 to 3:00pm. Phone at the desk. Post by 3:15pm.", "cta": "Send this to anyone with a settlement before Christmas.", "disclaimer": "scenario", "onScreen": "Settling before Christmas? Watch this."}, {"id": "W3-01", "week": "W3", "date": "2026-09-30", "day": "Wed", "time": "12:30", "format": "Reel", "lane": "A", "pillar": 3, "type": "mechanism", "title": "The three weeks after the RBA", "hook": "The RBA moved yesterday. Your repayment won't change for three weeks. Here's why that matters.", "angle": "Banks announce within 48 hours but effective dates for existing customers typically land two to three weeks later. That gap is the reprice window: the bank is most willing to negotiate with you in the fortnight after a move. If they held, the same window exists because banks are still fighting for new customers. Trade-off: repricing rarely matches a full refinance, but it costs nothing.", "kind": "TOPICAL", "filmWindow": "Films batch day Wed 30 Sep, morning after the decision. Adjust first line to what happened.", "cta": "Save this and set a reminder for two weeks from today.", "disclaimer": "general", "onScreen": "Announced: 48 hours. Effective: 3 weeks. Negotiate: now."}, {"id": "W3-02", "week": "W3", "date": "2026-10-01", "day": "Thu", "time": "12:30", "format": "Carousel", "lane": "-", "pillar": 2, "type": "news", "title": "Cotality September print", "hook": "PLACEHOLDER: [Six] months of falls. Here's the number inside the number.", "angle": "Placeholder for the September Home Value Index, expected 1 Oct (pattern). Lead with the national monthly change and Sydney, then the number nobody quotes (share of suburbs falling, or the gap between the top and bottom quartile). What it changes for a buyer with pre-approval expiring in November.", "kind": "TOPICAL", "filmWindow": "Thu 1 Oct, 10:00 to 10:15am once the release is live. Build the carousel from the template, post by midday.", "cta": "Save this for your next open home.", "disclaimer": "figures", "onScreen": ""}, {"id": "W3-03", "week": "W3", "date": "2026-10-02", "day": "Fri", "time": "06:45", "format": "Reel", "lane": "B", "pillar": 1, "type": "contrarian", "title": "Inflation is paying off your mortgage", "hook": "Inflation is quietly paying off your mortgage. Most people fight it.", "angle": "Debt devalues over time. A $1m loan in 2026 is a much smaller number in 2046 wages. The rational move for the right borrower is to use the bank's money first and your own capital last. This is my personal lens, not a rule for everyone. Trade-off: cash flow risk is real, rate rises land on leveraged borrowers first, and it does not suit anyone who cannot sleep with debt.", "kind": "EVERGREEN", "filmWindow": "", "cta": "", "disclaimer": "figures", "onScreen": "Debt devalues. Assets don't have to."}, {"id": "W3-04", "week": "W3", "date": "2026-10-03", "day": "Sat", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 5, "type": "process", "title": "Two weeks in public: the numbers", "hook": "Two weeks into the 10k experiment. Here's what actually happened.", "angle": "Built from the first Sunday review (27 Sep). Posts planned versus posted, follower delta, the best and worst post with the honest reason. What I'm changing for week 3. Real numbers only, pulled from the dashboard. If a week was missed, say so.", "kind": "EVERGREEN", "filmWindow": "Build Sat 3 Oct from the dashboard, 20 minutes.", "cta": "Follow for the next fortnight's numbers.", "disclaimer": "general", "onScreen": ""}, {"id": "W3-05", "week": "W3", "date": "2026-10-04", "day": "Sun", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 3, "type": "mechanism", "title": "Four small-deposit doors, three catches", "hook": "Four ways to buy with a small deposit. Three of them have a catch nobody mentions.", "angle": "Blind-ranking format. 5% Deposit Scheme (no income cap, Sydney price cap $1.5m, you carry a 95% loan), Help to Buy (government owns 30 to 40%, two lenders only, income caps), a guarantor (your parents' house is on the line), lender's mortgage insurance (you pay to protect the bank). Rank them for one composite buyer. Trade-off on each.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Send this to a first home buyer.", "disclaimer": "general", "onScreen": ""}, {"id": "W3-06", "week": "W3", "date": "2026-10-05", "day": "Mon", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 3, "type": "contrarian", "title": "Wrong first question", "hook": "Your broker asked what rate you want. That's the wrong first question.", "angle": "Most brokers give you a transaction, not a strategy. The first question is what structure gives you the most options over the next ten years. Rate is the last thing you settle, not the first. Trade-off: strategy takes longer and some people genuinely just need a loan by Friday.", "kind": "EVERGREEN", "filmWindow": "", "cta": "", "disclaimer": "general", "onScreen": "Structure first. Rate last."}, {"id": "W3-07", "week": "W3", "date": "2026-10-05", "day": "Mon", "time": "17:30", "format": "Carousel", "lane": "-", "pillar": 4, "type": "correction", "title": "Interest only is the point", "hook": "Interest only gets called lazy. For an investor it's the whole point.", "angle": "Deal breakdown, de-identified composite. An investor on principal and interest across two rentals was told she had hit her ceiling. Moving the investment loans to interest only freed the cash flow that kept her in the market. Interest only on the investment, principal and interest on the home you live in. Trade-off: usually a higher rate, no equity built through repayments, and a repayment jump when the term ends. A tool with a shelf life.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Save this and check when your IO term ends.", "disclaimer": "general", "onScreen": ""}, {"id": "W3-08", "week": "W3", "date": "2026-10-06", "day": "Tue", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 2, "type": "question", "title": "The card you never use", "hook": "A credit card you never use costs you about eighty grand of borrowing power.", "angle": "Banks assess the limit, not the balance. A $20,000 limit is treated as fully drawn at a high repayment rate. Roughly $80k of capacity on a typical calculator, illustrative. Trade-off: closing a long-held card can affect your credit file, and reducing the limit is often the smarter move than cancelling.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Comment CARD and I'll send you the checklist.", "disclaimer": "figures", "onScreen": "Limit $20k. Capacity gone: about $80k."}, {"id": "W4-01", "week": "W4", "date": "2026-10-07", "day": "Wed", "time": "12:30", "format": "Reel", "lane": "A", "pillar": 2, "type": "news", "title": "A third of your pay", "hook": "Sydney rent just hit a third of your income. That's the wrong reason to buy.", "angle": "Cotality: Sydney renters now spend a record 33.1% of gross income on rent, median around $800 a week, vacancy 1.7%. Rent pain pushes people to buy in a panic. Buy for the 30-year picture, not because this month hurts. Trade-off: rent is dead money only if you would otherwise have bought well.", "kind": "TOPICAL", "filmWindow": "Films batch day Wed 7 Oct. Refresh the rent figure if the October rental report has landed.", "cta": "Send this to a renter who's thinking about it.", "disclaimer": "figures", "onScreen": "Rent: 33.1% of income. Record."}, {"id": "W4-02", "week": "W4", "date": "2026-10-08", "day": "Thu", "time": "12:30", "format": "Carousel", "lane": "-", "pillar": 3, "type": "mechanism", "title": "The rate you'll never pay", "hook": "The bank tests you on a rate you will never pay.", "angle": "Every lender assesses your loan at the actual rate plus a 3% buffer, held there by APRA since 2021 and reaffirmed in May 2026. Illustrative: each quarter-point move in the cash rate shifts a typical borrower's capacity by about 2 to 3%. This year's rate rises did more to your borrowing power than any price fall gave back. Trade-off: the buffer is why arrears are low. It protects you as much as the bank.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Save this before your next pre-approval.", "disclaimer": "figures", "onScreen": ""}, {"id": "W4-03", "week": "W4", "date": "2026-10-09", "day": "Fri", "time": "06:45", "format": "Reel", "lane": "B", "pillar": 1, "type": "mechanism", "title": "Where the money actually comes from", "hook": "Your lender isn't a bank. So where does the money actually come from?", "angle": "Non-banks package loans up and sell them to investors, or borrow from big funds. That is why they can say yes when a major says no, and why they reprice faster when funding costs move. Recent stress in some private credit funds is a reminder to ask who stands behind a lender. Describe the mechanism, name nobody. Trade-off: the door that opens fastest is the one that can move your rate fastest.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Save this if you're with a non-bank.", "disclaimer": "general", "onScreen": "Packaged. Sold. Repriced."}, {"id": "W4-04", "week": "W4", "date": "2026-10-10", "day": "Sat", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 4, "type": "process", "title": "The deal that nearly died", "hook": "The bank said no on a Tuesday. It settled three weeks later. Same client, different structure.", "angle": "De-identified composite. A self-employed couple, a valuation that came in short, and a first lender that would not move. What changed: split the securities, moved one loan to a lender that reads twelve months of income, kept the rate conversation for last. No names, no figures specific enough to identify anyone, no lender named as better.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Follow for one of these a fortnight.", "disclaimer": "general", "onScreen": ""}, {"id": "W4-05", "week": "W4", "date": "2026-10-11", "day": "Sun", "time": "08:30", "format": "Carousel", "lane": "-", "pillar": 1, "type": "contrarian", "title": "A concession, not a plan", "hook": "I support negative gearing. I'd never build a plan on it.", "angle": "Both sides. It exists so people building their own retirement can carry a shortfall while rents catch up. It was never a wealth strategy. The Budget quarantine from 1 July 2027 on established property bought after 12 May 2026 proves the point: a concession can be withdrawn. If your investment only works because of the tax treatment, it does not work. Anything to do with tax is your accountant's call.", "kind": "EVERGREEN", "filmWindow": "", "cta": "", "disclaimer": "tax", "onScreen": ""}, {"id": "W4-06", "week": "W4", "date": "2026-10-12", "day": "Mon", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 1, "type": "contrarian", "title": "The bill went to the wrong people", "hook": "Every rate rise since 2022 landed on the people who didn't cause inflation.", "angle": "Government spending drives inflation, the private sector produces. The cash rate is a blunt tool: it misses anyone with a cash balance and no debt, who skew older, and lands on younger borrowers who are building and working. Australia's ageing population makes this structural. Trade-off: the RBA has one lever and it is not the RBA's fault that it is the wrong one.", "kind": "EVERGREEN", "filmWindow": "", "cta": "", "disclaimer": "general", "onScreen": "One lever. Wrong people."}, {"id": "W4-07", "week": "W4", "date": "2026-10-12", "day": "Mon", "time": "17:30", "format": "Carousel", "lane": "-", "pillar": 2, "type": "news", "title": "From 43% to 12%", "hook": "Five years ago a normal household could afford 43% of homes sold. Now it's 12%.", "angle": "VERIFY BEFORE POSTING: the FY2025-26 affordability figure (median income household, ~$125k, can afford 12% of homes sold nationally, down from 43% five years ago) was cited second-hand. Find the primary source or swap in the Cotality rent-to-income figure. Then: what closed the gap was not just price, it was borrowing capacity. Wages catching up is the only real fix.", "kind": "TOPICAL", "filmWindow": "Verify the source in the Sunday 11 Oct review. If unverifiable, run the backup angle.", "cta": "Share this with someone who says young people just need to save harder.", "disclaimer": "figures", "onScreen": ""}, {"id": "W4-08", "week": "W4", "date": "2026-10-13", "day": "Tue", "time": "06:45", "format": "Reel", "lane": "A", "pillar": 3, "type": "question", "title": "Your June pre-approval", "hook": "Your pre-approval from June is probably worth less than you think.", "angle": "Client question. Pre-approvals typically run 90 days, but the lender's policy can change underneath you in that window. This year: negative gearing removed from investor calculators, a rate rise or two through the buffer, a DTI cap. Same letter, smaller number. Trade-off: re-running it costs a credit enquiry on your file, so do it once, properly, before you bid.", "kind": "EVERGREEN", "filmWindow": "", "cta": "Comment PRE and I'll tell you the three things to re-check.", "disclaimer": "general", "onScreen": "Same letter. Smaller number."}], "stories": {"2026-09-16": "AM: batch day begins, phone on the tripod, the shot list on screen (P5). Midday: share W1-01 with the line 'banks are cutting, the RBA might not be'. PM: poll, 'has your bank cut your rate this year, or only new customers?'", "2026-09-17": "AM: share the ABC mortgage war piece with one line: the discount goes to whoever asks. Midday: share W1-02, 'seven lenders changed the calculator, here's what it means'. PM: quiz, 'guess how much investor borrowing power fell'.", "2026-09-18": "AM: share W1-03 with 'the structure your bank hopes you never question'. Midday: RBA Governor at House Economics today, share any quotable line with a one-line take. PM: BTS of the edit, 'two takes max, here's take two'.", "2026-09-19": "AM: share W1-04, '742 to 10,000, in public, follow along'. Midday: screenshot of the dashboard with the streak counter at zero. PM: poll, 'what do you want more of: numbers, structure, or the behind-the-scenes?'", "2026-09-20": "AM: share W1-05, 'nine in ten investors own one or two'. Midday: auction results from yesterday, one line on the clearance rate. PM: Sunday reset, tomorrow's two posts teased.", "2026-09-21": "AM: share W1-06, 'insurance from the person who sets the price'. Midday: question box, 'fixed or variable, and why?'. PM: share W1-07, 'the dip they waited for'.", "2026-09-22": "AM: share W1-08, 'HECS costs more capacity than your car loan'. Midday: Bullock CEDA fireside today, share if quotable. PM: week 1 wrap, eight of eight or not, said plainly. Tomorrow's batch day teased.", "2026-09-23": "AM: batch day two, shirt count. Midday: share W2-01, 'investors have left the field'. PM: poll, 'first home buyer or investor: who is winning spring?'", "2026-09-24": "AM: share W2-02, 'rate A vs rate B is the wrong fight'. Midday: news share, whatever the lead property story is. PM: question box, 'has a bank said no to you this year?'", "2026-09-25": "AM: share W2-03, 'send this to your accountant'. Midday: school holidays start, note it as a confounder in public. PM: BTS, the Lane B two-camera setup.", "2026-09-26": "AM: share W2-04, 'eight posts in ninety minutes'. Midday: auction day, one line at 6pm on Sydney clearance. PM: poll, 'which post this week did you actually watch to the end?'", "2026-09-27": "AM: share W2-05, '1,432 homes'. Midday: first Sunday review tonight, say so. PM: the review headline: hit rate, best post, the one change, screenshot of the dashboard.", "2026-09-28": "AM: share W2-06, 'tomorrow the RBA decides'. Midday: market pricing screenshot with the scenario disclaimer. PM: share W2-07, 'the number on your file'.", "2026-09-29": "AM: RBA day, 'decision at 2:30, reel by 3:15'. 2:35pm: the outcome, one line, no forecast. 3:15pm: share W2-08. PM: poll, 'did your bank announce yet?'", "2026-09-30": "AM: batch day three. Midday: share W3-01, 'your repayment won't change for three weeks'. PM: bank announcements as they land, one line each, no rates.", "2026-10-01": "AM: Cotality print due, 'numbers at 10, carousel by midday'. Midday: share W3-02. PM: RBA Financial Stability Review out today, share one household-stress line.", "2026-10-02": "AM: share W3-03, 'inflation is paying off your mortgage'. Midday: question box, 'what's the most debt you'd be comfortable holding?'. PM: BTS of the edit.", "2026-10-03": "AM: share W3-04, 'two weeks in public'. Midday: the dashboard growth chart, real reading. PM: auction results one-liner.", "2026-10-04": "AM: daylight saving, clocks forward, one line. Midday: share W3-05, 'four doors, three catches'. PM: poll, 'which small-deposit door would you take?'", "2026-10-05": "AM: Labour Day, expect quiet. Share W3-06, 'wrong first question'. Midday: question box, 'what did your broker ask you first?'. PM: share W3-07, 'interest only is the point'.", "2026-10-06": "AM: share W3-08, 'the card you never use'. Midday: reply to the best comment of the week on camera, 15 seconds. PM: week 3 wrap, plainly.", "2026-10-07": "AM: batch day four. Midday: share W4-01, 'a third of your pay'. PM: poll, 'renting or paying a mortgage: which is more than a third of your income?'", "2026-10-08": "AM: share W4-02, 'the rate you'll never pay'. Midday: news share. PM: question box, 'did a rate rise this year change your pre-approval?'", "2026-10-09": "AM: share W4-03, 'where the money comes from'. Midday: BTS, the two-camera Lane B setup. PM: poll, 'do you know who funds your lender?'", "2026-10-10": "AM: share W4-04, 'the deal that nearly died'. Midday: auction day one-liner. PM: question box, 'what's a deal-breaker a bank hit you with?'", "2026-10-11": "AM: share W4-05, 'a concession, not a plan'. Midday: Sunday review tonight. PM: review headline, streak count, the one change, dashboard screenshot.", "2026-10-12": "AM: share W4-06, 'the bill went to the wrong people'. Midday: verify the affordability stat live, or say you couldn't. PM: share W4-07.", "2026-10-13": "AM: share W4-08, 'your June pre-approval'. Midday: RBA September minutes out today, one line. PM: four weeks done, the honest tally, next batch tomorrow."}, "growth": [{"date": "2026-09-14", "count": 742, "source": "Matt, reported in brief"}]}</script>
+<script>
+(function(){
+'use strict';
+const PLAN = JSON.parse(document.getElementById('plan').textContent);
+const S = PLAN.settings;
+const PILLARS = Object.fromEntries(S.pillars.map(p=>[p.n,p]));
+const DAY = 86400000;
+const state = { slots:{}, growth:[], reviews:{}, meta:{}, db:null, dbState:'connecting', tab:'week', weekIdx:null, sort:{key:'date',dir:1}, filters:{format:'',pillar:'',status:'',week:''}, growthRange:'8w', pillarMetric:'score' };
+PLAN.slots.forEach(s=>state.slots[s.id]={...s,status:s.status||'PLANNED',metrics:s.metrics||{}});
+state.growth = PLAN.growth.slice();
+
+// ---------- date helpers ----------
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
+const todayISO=()=>iso(new Date());
+const fmtShort=s=>{const d=parse(s);return d.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'});};
+const fmtDM=s=>{const d=parse(s);return d.toLocaleDateString('en-AU',{day:'numeric',month:'short'});};
+const W1 = parse(PLAN.weeks[0].start);
+const WEEKS=()=>(state.meta.weeks&&state.meta.weeks.length)?state.meta.weeks:PLAN.weeks;
+const STORY=d=>(state.meta.stories&&state.meta.stories[d])||PLAN.stories[d]||'';
+const MOMENTS=()=>(state.meta.moments&&state.meta.moments.length)?state.meta.moments:PLAN.moments;
+function weekFor(dateISO){
+  const d=parse(dateISO); const n=Math.floor((d-W1)/DAY/7);
+  const known=WEEKS()[n];
+  if(known) return known;
+  const st=new Date(W1.getTime()+n*7*DAY), en=new Date(st.getTime()+6*DAY);
+  return {id:'W'+(n+1),n:n+1,start:iso(st),end:iso(en),theme:'Not yet planned. The Sunday review fills this in.',notes:''};
+}
+function allWeeks(){
+  const ids=new Set(WEEKS().map(w=>w.id));
+  Object.values(state.slots).forEach(s=>{const w=weekFor(s.date);ids.add(w.id);});
+  const t=weekFor(todayISO()); ids.add(t.id);
+  return [...ids].map(id=>{const n=parseInt(id.slice(1),10);const st=new Date(W1.getTime()+(n-1)*7*DAY);return weekFor(iso(st));}).sort((a,b)=>a.n-b.n);
+}
+
+// ---------- metrics ----------
+const num=v=>(v===''||v==null||isNaN(Number(v)))?null:Number(v);
+function rates(s){
+  const m=s.metrics||{}; const reach=num(m.reach);
+  const r={reach, views:num(m.views), likes:num(m.likes), comments:num(m.comments), shares:num(m.shares), saves:num(m.saves), profileVisits:num(m.profileVisits), follows:num(m.follows), avgWatchPct:num(m.avgWatchPct)};
+  const div=(a)=> (a!=null&&reach)?a/reach:null;
+  r.shareRate=div(r.shares); r.saveRate=div(r.saves); r.followRate=div(r.follows); r.visitRate=div(r.profileVisits);
+  const eng=[r.likes,r.comments,r.shares,r.saves].filter(v=>v!=null);
+  r.engRate=(eng.length&&reach)?eng.reduce((a,b)=>a+b,0)/reach:null;
+  r.replay=(r.views!=null&&reach)?r.views/reach:null;
+  return r;
+}
+const median=a=>{if(!a.length)return null;const s=a.slice().sort((x,y)=>x-y);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;};
+const WEIGHTS={reach:.25,shareRate:.25,saveRate:.15,followRate:.25,engRate:.10};
+function scored(){
+  const posted=Object.values(state.slots).filter(s=>s.status==='POSTED'&&num(s.metrics&&s.metrics.reach)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  const out={};
+  posted.forEach((s,i)=>{
+    const r=rates(s);
+    let pool=posted.slice(0,i).filter(p=>p.format===s.format).slice(-20);
+    let provisional=false;
+    if(pool.length<8){pool=posted.slice(0,i).slice(-20);provisional=true;}
+    if(pool.length<4){out[s.id]={score:null,provisional:true,r,n:pool.length};return;}
+    let lw=0,acc=0;
+    for(const k in WEIGHTS){
+      const v=r[k]; if(v==null||v<=0) continue;
+      const med=median(pool.map(p=>rates(p)[k]).filter(x=>x!=null&&x>0));
+      if(!med) continue;
+      acc+=WEIGHTS[k]*Math.log2(v/med); lw+=WEIGHTS[k];
+    }
+    if(!lw){out[s.id]={score:null,provisional:true,r,n:pool.length};return;}
+    const score=Math.max(1,Math.min(100,Math.round(50+25*(acc/lw))));
+    out[s.id]={score,provisional,r,n:pool.length};
+  });
+  return out;
+}
+const scoreClass=v=>v==null?'na':v>=70?'good':v>=40?'mid':'poor';
+
+// ---------- streak ----------
+function weekStats(w){
+  const slots=Object.values(state.slots).filter(s=>s.date>=w.start&&s.date<=w.end);
+  const posted=slots.filter(s=>s.status==='POSTED').length;
+  const filmed=slots.filter(s=>s.status==='FILMED').length;
+  const skipped=slots.filter(s=>s.status==='SKIPPED');
+  const reasons={}; skipped.forEach(s=>{const k=(s.skipReason||'unstated').toLowerCase();reasons[k]=(reasons[k]||0)+1;});
+  return {slots,planned:slots.length,posted,filmed,skipped:skipped.length,reasons,hit:slots.length?posted/Math.max(S.postsPerWeek,slots.length):0,complete:w.end<todayISO()};
+}
+function streak(){
+  const weeks=allWeeks().filter(w=>w.end<todayISO());
+  let cur=0,best=0,run=0,brokenLast=false;
+  weeks.forEach(w=>{const st=weekStats(w); if(st.posted>=S.postsPerWeek){run++;best=Math.max(best,run);}else{run=0;}});
+  cur=run;
+  if(weeks.length){const last=weekStats(weeks[weeks.length-1]); brokenLast=last.posted<S.postsPerWeek;}
+  return {cur,best,brokenLast,completed:weeks.length};
+}
+
+// ---------- growth ----------
+function pace(dateISO){
+  const t0=parse(S.startDate),t1=parse(S.goalDate),t=parse(dateISO);
+  const f=Math.min(1,Math.max(0,(t-t0)/(t1-t0)));
+  return S.startFollowers+(S.goal-S.startFollowers)*f;
+}
+function growthSummary(){
+  const g=state.growth.slice().sort((a,b)=>a.date<b.date?-1:1);
+  const first=g[0],last=g[g.length-1];
+  const weeksTotal=(parse(S.goalDate)-parse(S.startDate))/DAY/7;
+  const weeksElapsed=Math.max(0,(parse(last.date)-parse(S.startDate))/DAY/7);
+  const weeksLeft=Math.max(0.1,weeksTotal-weeksElapsed);
+  const requiredNow=(S.goal-last.count)/weeksLeft;
+  const requiredOriginal=(S.goal-S.startFollowers)/weeksTotal;
+  const actualRate=weeksElapsed>=1?(last.count-S.startFollowers)/weeksElapsed:null;
+  const prev=g.length>1?g[g.length-2]:null;
+  const delta7=prev?last.count-prev.count:null;
+  return {first,last,requiredNow,requiredOriginal,actualRate,onPace:last.count>=pace(last.date),paceNow:pace(last.date),delta7,prev};
+}
+
+// ---------- render helpers ----------
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function pillarChip(n){const p=PILLARS[n]||{short:'P'+n};return `<span class="chip" style="background:var(--surface2)"><span class="dot p${n}"></span>${esc(p.short)}</span>`;}
+function scoreBadge(sc){if(!sc||sc.score==null)return `<span class="score na">n/a</span>`;return `<span class="score ${scoreClass(sc.score)} num" title="${sc.provisional?'provisional, under 8 posts in baseline':'vs trailing median'}">${sc.score}${sc.provisional?'*':''}</span>`;}
+
+// ---------- THIS WEEK ----------
+function renderWeek(){
+  const root=document.getElementById('tab-week'); root.innerHTML='';
+  const weeks=allWeeks(); const today=todayISO();
+  if(state.weekIdx==null){const cur=weekFor(today);state.weekIdx=weeks.findIndex(w=>w.id===cur.id);if(state.weekIdx<0)state.weekIdx=0;}
+  const w=weeks[state.weekIdx]; const st=weekStats(w); const sc=scored();
+
+  // today card
+  const todays=Object.values(state.slots).filter(s=>s.date===today).sort((a,b)=>a.time<b.time?-1:1);
+  const tc=el('div','card today');
+  const arc=STORY(today);
+  let th=`<h2 style="margin-top:0">Today &middot; ${fmtShort(today)}</h2>`;
+  if(todays.length){
+    th+=todays.map(s=>`<div style="margin-bottom:8px"><div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="chip fmt">${esc(s.format)}${s.lane&&s.lane!=='-'?' &middot; Lane '+esc(s.lane):''}</span>${pillarChip(s.pillar)}<span class="chip ${esc(s.kind)}">${esc(s.kind)}</span><span class="chip ${esc(s.status)}">${esc(s.status)}</span><span class="small num">${esc(s.time)}</span></div><h3 style="margin-top:6px">${esc(s.title)}</h3><div class="hook">${esc(s.hook)}</div>${s.cta?`<div class="small" style="margin-top:4px">CTA: ${esc(s.cta)}</div>`:''}<div style="margin-top:8px"><button class="btn small primary" data-open="${esc(s.id)}">Update status or numbers</button></div></div>`).join('');
+  } else th+=`<div class="empty">Nothing scheduled to post today.</div>`;
+  if(arc) th+=`<h2>Story arc</h2><div class="storyline">${esc(arc).replace(/ \| /g,'\n')}</div>`;
+  tc.innerHTML=th; root.appendChild(tc);
+
+  // week nav + compliance
+  const nav=el('div','weeknav');
+  nav.innerHTML=`<button class="btn small" id="wkPrev" ${state.weekIdx===0?'disabled':''}>&lsaquo; Prev</button><div style="text-align:center"><div class="wk">Week ${w.n}${w.id===weekFor(today).id?' &middot; this week':''}</div><div class="rng">${fmtDM(w.start)} to ${fmtDM(w.end)} &middot; batch ${w.batch?fmtDM(w.batch):'Wed'}</div></div><button class="btn small" id="wkNext" ${state.weekIdx>=weeks.length-1?'disabled':''}>Next &rsaquo;</button>`;
+  root.appendChild(nav);
+  nav.querySelector('#wkPrev').onclick=()=>{state.weekIdx--;renderWeek();};
+  nav.querySelector('#wkNext').onclick=()=>{state.weekIdx++;renderWeek();};
+
+  const comp=el('div','card');
+  const pct=Math.round(100*st.posted/S.postsPerWeek);
+  comp.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><h3>${esc(w.theme||'')}</h3></div>
+  <div class="progress"><i class="${st.posted<S.postsPerWeek&&st.complete?'short':''}" style="width:${Math.min(100,pct)}%"></i></div>
+  <div style="display:flex;justify-content:space-between;font-size:13px" class="num"><span><b>${st.posted}</b> posted of ${S.postsPerWeek}${st.filmed?` &middot; ${st.filmed} filmed`:''}${st.skipped?` &middot; <span style="color:var(--bad)">${st.skipped} skipped</span>`:''}</span><span>${pct}% hit rate</span></div>
+  ${Object.keys(st.reasons).length?`<div class="small" style="margin-top:6px">Skip reasons: ${Object.entries(st.reasons).map(([k,v])=>`${esc(k)} &times;${v}`).join(', ')}</div>`:''}
+  ${w.notes?`<div class="small" style="margin-top:8px">${esc(w.notes)}</div>`:''}`;
+  root.appendChild(comp);
+
+  // review card
+  const rv=state.reviews[w.id]||state.reviews[weeks[state.weekIdx-1]?.id];
+  if(rv){const rc=el('div','card review');rc.innerHTML=`<h2 style="margin-top:0">Last Sunday review${rv.week?' &middot; '+esc(rv.week):''}</h2><div class="one">&#11088; ${esc(rv.oneChange||'')}</div>${rv.summary?`<div class="small" style="margin-top:6px;white-space:pre-line">${esc(rv.summary)}</div>`:''}`;root.appendChild(rc);}
+
+  // slots
+  const list=el('div','card');
+  const h=el('h2','', 'The 8 slots'); h.style.marginTop='0'; list.appendChild(h);
+  const slots=st.slots.sort((a,b)=>(a.date+a.time)<(b.date+b.time)?-1:1);
+  if(!slots.length) list.appendChild(el('div','empty','No slots planned for this week yet. The Sunday review builds it.'));
+  slots.forEach(s=>{
+    const d=parse(s.date);
+    const row=el('div','slot');
+    row.innerHTML=`<div class="when"><span class="d">${d.toLocaleDateString('en-AU',{weekday:'short'})}</span><span class="n num">${d.getDate()}</span><span class="t num">${esc(s.time)}</span></div>
+    <div class="body"><div class="meta"><span class="chip fmt">${esc(s.format)}${s.lane&&s.lane!=='-'?' &middot; '+esc(s.lane):''}</span>${pillarChip(s.pillar)}<span class="chip ${esc(s.kind)}">${esc(s.kind)}</span></div>
+    <div class="title">${esc(s.title)}</div><div class="hook">${esc(s.hook)}</div>
+    ${s.filmWindow&&s.kind==='TOPICAL'?`<div class="small" style="margin-top:3px">&#9201; ${esc(s.filmWindow)}</div>`:''}</div>
+    <div class="act"><button class="chip ${esc(s.status)}" data-open="${esc(s.id)}" style="cursor:pointer">${esc(s.status)}${s.status==='SKIPPED'&&s.skipReason?' &middot; '+esc(s.skipReason):''}</button>${s.status==='POSTED'?scoreBadge(sc[s.id]):''}</div>`;
+    list.appendChild(row);
+  });
+  root.appendChild(list);
+
+  // stories for the week
+  const stc=el('div','card'); let sh=`<h2 style="margin-top:0">Story arcs this week</h2>`;
+  for(let i=0;i<7;i++){const d=iso(new Date(parse(w.start).getTime()+i*DAY));const a=STORY(d);if(a)sh+=`<div style="padding:6px 0;border-top:1px solid var(--line)"><div class="small" style="font-weight:600;color:var(--ink2)">${fmtShort(d)}</div><div class="storyline">${esc(a).replace(/ \| /g,'\n')}</div></div>`;}
+  if(sh.indexOf('storyline')<0) sh+=`<div class="empty">Story arcs come with the Sunday review.</div>`;
+  stc.innerHTML=sh; root.appendChild(stc);
+
+  // 8 week themes
+  const tm=el('div','themes'); tm.innerHTML=`<h2>Next eight weeks</h2>`;
+  WEEKS().slice(Math.max(0,weekFor(today).n-1)).slice(0,8).forEach(pw=>{const c=el('div','card');const ws=weekStats(pw);c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><span class="wk">Week ${pw.n} &middot; ${fmtDM(pw.start)} to ${fmtDM(pw.end)}</span>${ws.planned?`<span class="small num">${ws.posted}/${ws.planned}</span>`:'<span class="small">themes only</span>'}</div><div style="margin-top:4px;font-size:14px">${esc(pw.theme)}</div>`;tm.appendChild(c);});
+  root.appendChild(tm);
+
+  // moments
+  const mo=el('div','card moments'); let mh=`<h2 style="margin-top:0">Australian moments to plan around</h2>`;
+  MOMENTS().filter(m=>m.date>=today).slice(0,14).forEach(m=>{mh+=`<div><span class="dt num">${fmtDM(m.date)}</span><span>${esc(m.event)}${m.confirmed?'':' <span class="tag">unconfirmed</span>'}<div class="small">${esc(m.use)}</div></span></div>`;});
+  mo.innerHTML=mh; root.appendChild(mo);
+
+  root.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openSheet(b.getAttribute('data-open')));
+}
+
+// ---------- LOG ----------
+const COLS=[['date','Date'],['time','Time'],['format','Format'],['pillar','Pillar'],['title','Title'],['hook','Hook'],['kind','Kind'],['cta','CTA'],['status','Status'],['skipReason','Skip'],['reach','Reach'],['views','Views'],['likes','Likes'],['comments','Comm.'],['shares','Shares'],['saves','Saves'],['profileVisits','Visits'],['follows','Follows'],['avgWatchPct','Watch %'],['shareRate','Share %'],['saveRate','Save %'],['followRate','Follow %'],['engRate','Eng %'],['score','Score']];
+function renderLog(){
+  const root=document.getElementById('tab-log'); root.innerHTML='';
+  const sc=scored();
+  let rows=Object.values(state.slots).map(s=>{const r=rates(s);const k=sc[s.id]||{};return {...s,...(s.metrics||{}),shareRate:r.shareRate,saveRate:r.saveRate,followRate:r.followRate,engRate:r.engRate,score:k.score==null?null:k.score,provisional:k.provisional};});
+  const f=state.filters;
+  rows=rows.filter(r=>(!f.format||r.format===f.format)&&(!f.pillar||String(r.pillar)===f.pillar)&&(!f.status||r.status===f.status)&&(!f.week||weekFor(r.date).id===f.week));
+  const {key,dir}=state.sort;
+  rows.sort((a,b)=>{let x=a[key],y=b[key];if(key==='date'){x=a.date+a.time;y=b.date+b.time;}if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;if(typeof x==='number'||typeof y==='number')return (Number(x)-Number(y))*dir;return String(x).localeCompare(String(y))*dir;});
+  const posted=Object.values(state.slots).filter(s=>s.status==='POSTED').length, skipped=Object.values(state.slots).filter(s=>s.status==='SKIPPED').length;
+  const top=el('div','grid2'); top.innerHTML=`<div class="tile"><div class="l">Logged</div><div class="v num">${Object.keys(state.slots).length}</div><div class="d">slots planned</div></div><div class="tile"><div class="l">Posted</div><div class="v num">${posted}</div><div class="d">with numbers: ${Object.values(state.slots).filter(s=>s.status==='POSTED'&&num(s.metrics&&s.metrics.reach)).length}</div></div><div class="tile"><div class="l">Skipped</div><div class="v num" style="color:${skipped?'var(--bad)':'inherit'}">${skipped}</div><div class="d">${skipPattern()}</div></div>`;
+  root.appendChild(top);
+  const fl=el('div','filters');
+  const weeks=allWeeks();
+  fl.innerHTML=`<select id="fFormat"><option value="">All formats</option><option>Reel</option><option>Carousel</option><option>Story</option></select>
+  <select id="fPillar"><option value="">All pillars</option>${S.pillars.map(p=>`<option value="${p.n}">${p.n} &middot; ${esc(p.short)}</option>`).join('')}</select>
+  <select id="fStatus"><option value="">All statuses</option><option>PLANNED</option><option>FILMED</option><option>POSTED</option><option>SKIPPED</option></select>
+  <select id="fWeek"><option value="">All weeks</option>${weeks.map(w=>`<option value="${w.id}">${w.id} &middot; ${fmtDM(w.start)}</option>`).join('')}</select>
+  <button class="btn small" id="addSlot">+ Add slot</button>`;
+  root.appendChild(fl);
+  ['fFormat','fPillar','fStatus','fWeek'].forEach((id,i)=>{const k=['format','pillar','status','week'][i];const e=fl.querySelector('#'+id);e.value=f[k];e.onchange=()=>{f[k]=e.value;renderLog();};});
+  fl.querySelector('#addSlot').onclick=()=>openSheet(null);
+  const tw=el('div','tablewrap');
+  const pct=v=>v==null?'':(100*v).toFixed(2)+'%';
+  const cell=(r,k)=>{const v=r[k];if(k==='pillar')return pillarChip(v);if(k==='status')return `<span class="chip ${esc(v)}">${esc(v)}</span>`;if(k==='kind')return `<span class="chip ${esc(v)}">${esc(v)}</span>`;if(k==='score')return scoreBadge({score:v,provisional:r.provisional});if(['shareRate','saveRate','followRate','engRate'].includes(k))return `<span class="num">${pct(v)}</span>`;if(k==='date')return `<span class="num">${fmtDM(v)}</span>`;if(v==null||v==='')return '<span class="small">n/a</span>';return esc(v);};
+  tw.innerHTML=`<table><thead><tr>${COLS.map(([k,l])=>`<th data-k="${k}" class="${key===k?'on':''}">${l}${key===k?(dir>0?' &uarr;':' &darr;'):''}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr class="row${scoreClass(r.score)}" data-open="${esc(r.id)}" style="cursor:pointer">${COLS.map(([k])=>`<td class="${k==='hook'||k==='title'||k==='cta'?'hookcell':''}">${cell(r,k)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  root.appendChild(tw);
+  tw.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(state.sort.key===k)state.sort.dir*=-1;else state.sort={key:k,dir:1};renderLog();});
+  tw.querySelectorAll('tr[data-open]').forEach(tr=>tr.onclick=()=>openSheet(tr.dataset.open));
+  root.appendChild(el('div','small',`Score is 50 at your own trailing 20-post median for that format, 75 at double it, 25 at half. * means provisional, fewer than 8 posts in the baseline. Rates are per unique account reached. Tap a row to edit.`)).style.marginTop='8px';
+}
+function skipPattern(){const r={};Object.values(state.slots).filter(s=>s.status==='SKIPPED').forEach(s=>{const k=(s.skipReason||'unstated').toLowerCase();r[k]=(r[k]||0)+1;});const e=Object.entries(r).sort((a,b)=>b[1]-a[1]);return e.length?`most common: ${e[0][0]} (${e[0][1]})`:'no skips yet';}
+
+// ---------- GROWTH ----------
+function renderGrowth(){
+  const root=document.getElementById('tab-growth'); root.innerHTML='';
+  const g=growthSummary(); const st=streak();
+  const gap=Math.round(g.last.count-g.paceNow);
+  const tiles=el('div','grid2');
+  tiles.innerHTML=`<div class="tile"><div class="l">Followers</div><div class="v num">${g.last.count.toLocaleString()}</div><div class="d">read ${fmtDM(g.last.date)}${g.delta7!=null?` &middot; ${g.delta7>=0?'+':''}${g.delta7} since last reading`:''}</div></div>
+  <div class="tile"><div class="l">Pace</div><div class="v num" style="color:${gap>=0?'var(--good)':'var(--bad)'}">${gap>=0?'+':''}${gap}</div><div class="d">vs the 10k line at ${Math.round(g.paceNow).toLocaleString()}</div></div>
+  <div class="tile"><div class="l">Required per week</div><div class="v num">${Math.round(g.requiredNow)}</div><div class="d">from here to ${S.goal.toLocaleString()} by ${fmtDM(S.goalDate)}</div></div>
+  <div class="tile"><div class="l">Actual per week</div><div class="v num">${g.actualRate==null?'n/a':Math.round(g.actualRate)}</div><div class="d">${g.actualRate==null?'needs one full week of readings':'average since '+fmtDM(S.startDate)}</div></div>`;
+  root.appendChild(tiles);
+  const c=el('div','card'); c.style.marginTop='10px';
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">Follower count vs the 10k line</h3><div class="seg"><button data-r="8w" aria-pressed="${state.growthRange==='8w'}">Last 8 weeks</button><button data-r="year" aria-pressed="${state.growthRange==='year'}">Full year</button></div></div><div class="chartbox" id="chartbox"></div><div class="legend"><span><i style="width:18px;height:2px;background:var(--accent);display:inline-block"></i>Followers</span><span><i style="width:18px;height:0;border-top:2px dashed var(--muted);display:inline-block"></i>10k pace</span></div>`;
+  root.appendChild(c);
+  c.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{state.growthRange=b.dataset.r;renderGrowth();});
+  drawChart(c.querySelector('#chartbox'));
+  const add=el('div','card'); add.innerHTML=`<h3>Add a follower reading</h3><div class="small">Snapshot at every Sunday pull. Real readings only, never a guess.</div><div class="fgrid" style="margin-top:8px"><div class="field"><label for="gDate">Date</label><input id="gDate" type="date" value="${todayISO()}"></div><div class="field"><label for="gCount">Followers</label><input id="gCount" type="number" inputmode="numeric" placeholder="e.g. 760"></div></div><div class="actions" style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn primary" id="gSave">Save reading</button></div>`;
+  root.appendChild(add);
+  add.querySelector('#gSave').onclick=async()=>{const d=add.querySelector('#gDate').value,n=num(add.querySelector('#gCount').value);if(!d||n==null){toast('Date and count needed');return;}const list=state.growth.filter(x=>x.date!==d).concat([{date:d,count:n,source:'dashboard'}]).sort((a,b)=>a.date<b.date?-1:1);await saveGrowth(list);};
+  const sk=el('div','card'); sk.innerHTML=`<h3>Streak</h3><div style="display:flex;gap:18px;flex-wrap:wrap" class="num"><div><div class="small">Current</div><div style="font-size:30px;font-weight:700;color:${st.brokenLast?'var(--bad)':st.cur?'var(--good)':'var(--muted)'}">${st.cur}</div></div><div><div class="small">Best</div><div style="font-size:30px;font-weight:700">${st.best}</div></div><div><div class="small">Weeks completed</div><div style="font-size:30px;font-weight:700">${st.completed}</div></div></div><div class="small" style="margin-top:6px">${st.brokenLast?'Last completed week missed 8. The streak reset to zero.':st.completed?'Every completed week so far hit 8.':'First week closes '+fmtShort(WEEKS()[0].end)+'.'}</div>`;
+  root.appendChild(sk);
+  const hist=el('div','card'); hist.innerHTML=`<h3>Readings</h3>`+state.growth.slice().sort((a,b)=>a.date<b.date?1:-1).map(r=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line)" class="num"><span>${fmtShort(r.date)}</span><b>${r.count.toLocaleString()}</b><span class="small">${esc(r.source||'')}</span></div>`).join('');
+  root.appendChild(hist);
+}
+function drawChart(box){
+  const W=360,H=200,L=40,R=10,T=12,B=26;
+  const g=state.growth.slice().sort((a,b)=>a.date<b.date?-1:1);
+  let x0,x1,y0,y1;
+  if(state.growthRange==='year'){x0=parse(S.startDate);x1=parse(S.goalDate);y0=0;y1=S.goal;}
+  else{x1=new Date(Math.max(parse(todayISO()).getTime(),parse(g[g.length-1].date).getTime()));x0=new Date(x1.getTime()-8*7*DAY);const inRange=g.filter(r=>parse(r.date)>=x0);const vals=inRange.map(r=>r.count).concat([pace(iso(x0)),pace(iso(x1))]);const mn=Math.min(...vals),mx=Math.max(...vals);const padv=Math.max(40,(mx-mn)*.2);y0=Math.max(0,Math.floor((mn-padv)/50)*50);y1=Math.ceil((mx+padv)/50)*50;}
+  const X=d=>L+(W-L-R)*((d-x0)/(x1-x0)),Y=v=>T+(H-T-B)*(1-(v-y0)/(y1-y0));
+  const ticks=5;let grid='',ylab='';
+  for(let i=0;i<=ticks;i++){const v=y0+(y1-y0)*i/ticks;grid+=`<line class="grid" x1="${L}" x2="${W-R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/>`;ylab+=`<text x="${L-6}" y="${(Y(v)+3).toFixed(1)}" text-anchor="end">${Math.round(v)>=1000?(Math.round(v)/1000).toFixed(1).replace(/\.0$/,'')+'k':Math.round(v)}</text>`;}
+  const months=[];let m=new Date(x0.getFullYear(),x0.getMonth()+1,1);while(m<=x1){months.push(new Date(m));m=new Date(m.getFullYear(),m.getMonth()+1,1);}
+  const xl=(state.growthRange==='year'?months.filter((_,i)=>i%2===0):months).map(d=>`<text x="${X(d).toFixed(1)}" y="${H-8}" text-anchor="middle">${d.toLocaleDateString('en-AU',{month:'short'})}</text>`).join('');
+  const pts=g.filter(r=>parse(r.date)>=x0&&parse(r.date)<=x1);
+  const path=pts.map((r,i)=>`${i?'L':'M'}${X(parse(r.date)).toFixed(1)},${Y(r.count).toFixed(1)}`).join(' ');
+  const area=pts.length>1?path+` L${X(parse(pts[pts.length-1].date)).toFixed(1)},${Y(y0)} L${X(parse(pts[0].date)).toFixed(1)},${Y(y0)} Z`:'';
+  const pace0=new Date(Math.max(x0.getTime(),parse(S.startDate).getTime())),pace1=x1;
+  const paceLine=`M${X(pace0).toFixed(1)},${Y(pace(iso(pace0))).toFixed(1)} L${X(pace1).toFixed(1)},${Y(pace(iso(pace1))).toFixed(1)}`;
+  const goalLine=state.growthRange==='year'?`<line class="goal" x1="${L}" x2="${W-R}" y1="${Y(S.goal)}" y2="${Y(S.goal)}"/><text x="${W-R}" y="${Y(S.goal)-4}" text-anchor="end">10,000 goal</text>`:'';
+  const dots=pts.map((r,i)=>`<circle class="pt${i===pts.length-1?' last':''}" r="4" cx="${X(parse(r.date)).toFixed(1)}" cy="${Y(r.count).toFixed(1)}" data-i="${i}"><title>${fmtShort(r.date)}: ${r.count.toLocaleString()} followers, pace ${Math.round(pace(r.date)).toLocaleString()}</title></circle>`).join('');
+  const lastLab=pts.length?`<text x="${Math.min(W-R-30,X(parse(pts[pts.length-1].date))+6).toFixed(1)}" y="${(Y(pts[pts.length-1].count)-8).toFixed(1)}" style="fill:var(--ink);font-weight:600">${pts[pts.length-1].count.toLocaleString()}</text>`:'';
+  box.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Follower count against the 10k pace line">${grid}${ylab}${xl}${goalLine}<path class="pace" d="${paceLine}"/>${area?`<path class="area" d="${area}"/>`:''}${path?`<path class="line" d="${path}"/>`:''}${dots}${lastLab}</svg><div class="tip" id="tip"></div>`;
+  const svg=box.querySelector('svg'),tip=box.querySelector('#tip');
+  svg.addEventListener('pointermove',e=>{if(!pts.length)return;const rect=svg.getBoundingClientRect();const px=(e.clientX-rect.left)/rect.width*W;let best=0,bd=1e9;pts.forEach((r,i)=>{const d=Math.abs(X(parse(r.date))-px);if(d<bd){bd=d;best=i;}});const r=pts[best];tip.style.display='block';tip.style.left=(X(parse(r.date))/W*rect.width)+'px';tip.style.top=(Y(r.count)/H*rect.height)+'px';tip.textContent=`${fmtDM(r.date)} &middot; ${r.count.toLocaleString()} &middot; pace ${Math.round(pace(r.date)).toLocaleString()}`;});
+  svg.addEventListener('pointerleave',()=>tip.style.display='none');
+}
+
+// ---------- PILLARS ----------
+function renderPillars(){
+  const root=document.getElementById('tab-pillars'); root.innerHTML='';
+  const sc=scored();
+  const agg={};S.pillars.forEach(p=>agg[p.n]={n:p.n,name:p.name,short:p.short,posts:0,planned:0,reach:0,shares:0,saves:0,follows:0,scores:[],shareRates:[],followRates:[]});
+  Object.values(state.slots).forEach(s=>{const a=agg[s.pillar];if(!a)return;a.planned++;if(s.status!=='POSTED')return;a.posts++;const r=rates(s);if(r.reach){a.reach+=r.reach;a.shares+=r.shares||0;a.saves+=r.saves||0;a.follows+=r.follows||0;if(r.shareRate!=null)a.shareRates.push(r.shareRate);if(r.followRate!=null)a.followRates.push(r.followRate);}const k=sc[s.id];if(k&&k.score!=null)a.scores.push(k.score);});
+  const rows=Object.values(agg);
+  const metric=state.pillarMetric;
+  const val=a=>metric==='score'?(a.scores.length?a.scores.reduce((x,y)=>x+y,0)/a.scores.length:null):metric==='reach'?(a.posts?a.reach:null):metric==='shares'?(a.posts?a.shares:null):metric==='follows'?(a.posts?a.follows:null):(a.planned);
+  const mx=Math.max(1,...rows.map(a=>val(a)||0));
+  const c=el('div','card');
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">Which pillar is carrying growth</h3><div class="seg">${[['score','Avg score'],['reach','Reach'],['shares','Shares'],['follows','Follows'],['planned','Slots']].map(([k,l])=>`<button data-m="${k}" aria-pressed="${metric===k}">${l}</button>`).join('')}</div></div><div style="margin-top:10px">${rows.map(a=>{const v=val(a);return `<div class="bar"><div class="lab"><span class="dot p${a.n}"></span>${esc(a.short)}</div><div class="track"><i style="width:${v==null?0:Math.round(100*v/mx)}%;background:var(--p${a.n})"></i></div><div class="val num">${v==null?'<span class="small">n/a</span>':metric==='score'?Math.round(v):v.toLocaleString()}</div></div>`;}).join('')}</div>`;
+  root.appendChild(c);
+  c.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{state.pillarMetric=b.dataset.m;renderPillars();});
+  const t=el('div','tablewrap'); t.style.marginTop='10px';
+  const pct=v=>v==null?'n/a':(100*v).toFixed(2)+'%';
+  t.innerHTML=`<table style="min-width:640px"><thead><tr><th>Pillar</th><th>Planned</th><th>Posted</th><th>Avg score</th><th>Reach</th><th>Share rate</th><th>Follow rate</th><th>Follows</th></tr></thead><tbody>${rows.map(a=>`<tr><td>${pillarChip(a.n)} <span class="small">${esc(a.name)}</span></td><td class="num">${a.planned}</td><td class="num">${a.posts}</td><td class="num">${a.scores.length?Math.round(a.scores.reduce((x,y)=>x+y,0)/a.scores.length):'n/a'}</td><td class="num">${a.posts&&a.reach?a.reach.toLocaleString():'n/a'}</td><td class="num">${pct(median(a.shareRates))}</td><td class="num">${pct(median(a.followRates))}</td><td class="num">${a.posts?a.follows:'n/a'}</td></tr>`).join('')}</tbody></table>`;
+  root.appendChild(t);
+  const d=el('div','card'); d.style.marginTop='10px'; d.innerHTML=`<h3>The five pillars</h3>`+S.pillars.map(p=>`<div style="padding:7px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:center;gap:8px;font-weight:600"><span class="dot p${p.n}"></span>${p.n}. ${esc(p.name)}</div><div class="small">${esc(p.desc)}</div></div>`).join('')+`<div class="small" style="margin-top:8px">Pillar 5 is not a fixed slot. It weaves in at one or two posts a week and carries most Stories. Topicality beats symmetry.</div>`;
+  root.appendChild(d);
+}
+
+// ---------- HOOKS ----------
+function hookTags(h){
+  const t=[];const s=h.toLowerCase();
+  if(/^\d|\b\d+(\.\d+)?%|\$\d|\b(seven|nine|two|three|four|five|eight|ten|thirteen|742|1,432)\b/.test(s))t.push('Number-led');
+  if(/\byou|your\b/.test(s))t.push('Second person');
+  if(/\?/.test(h))t.push('Question');
+  if(/\. .+\./.test(h.trim())&&h.split('.').filter(x=>x.trim()).length>=2)t.push('Two-beat turn');
+  if(/\b(wrong|fiction|isn't|not|never|nobody|stopped|don't|won't)\b/.test(s))t.push('Contrarian');
+  if(/\b(bank|banks|rba|lender|lenders|broker)\b/.test(s))t.push('Names the counterparty');
+  if(/\b(here's|here is)\b/.test(s))t.push('Promise');
+  return t;
+}
+function renderHooks(){
+  const root=document.getElementById('tab-hooks'); root.innerHTML='';
+  const sc=scored();
+  const rows=Object.values(state.slots).map(s=>({...s,score:(sc[s.id]||{}).score??null,prov:(sc[s.id]||{}).provisional})).sort((a,b)=>{if(a.score==null&&b.score==null)return a.date<b.date?1:-1;if(a.score==null)return 1;if(b.score==null)return -1;return b.score-a.score;});
+  const tagAgg={};rows.forEach(r=>hookTags(r.hook).forEach(t=>{tagAgg[t]=tagAgg[t]||{n:0,scores:[]};tagAgg[t].n++;if(r.score!=null)tagAgg[t].scores.push(r.score);}));
+  const pat=el('div','card');pat.innerHTML=`<h3>Hook patterns</h3><div class="small">Average score by pattern. Patterns repeat as winners when the number on the right stays above 50.</div><div style="margin-top:8px">${Object.entries(tagAgg).sort((a,b)=>(b[1].scores.length?b[1].scores.reduce((x,y)=>x+y,0)/b[1].scores.length:0)-(a[1].scores.length?a[1].scores.reduce((x,y)=>x+y,0)/a[1].scores.length:0)).map(([t,a])=>`<div class="bar"><div class="lab"><span class="tag">${esc(t)}</span></div><div class="track"><i style="width:${a.scores.length?Math.round(a.scores.reduce((x,y)=>x+y,0)/a.scores.length):0}%;background:var(--accent)"></i></div><div class="val num">${a.scores.length?Math.round(a.scores.reduce((x,y)=>x+y,0)/a.scores.length):'<span class="small">'+a.n+' used</span>'}</div></div>`).join('')}</div>`;
+  root.appendChild(pat);
+  const lib=el('div','card');lib.style.marginTop='10px';lib.innerHTML=`<h3>Every hook, best first</h3>`+rows.map(r=>`<div class="hookrow"><div><div class="h">${esc(r.hook)}</div><div class="m"><span class="chip fmt">${esc(r.format)}</span>${pillarChip(r.pillar)}<span class="tag num">${fmtDM(r.date)}</span><span class="chip ${esc(r.status)}">${esc(r.status)}</span>${hookTags(r.hook).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div><div>${scoreBadge({score:r.score,provisional:r.prov})}</div></div>`).join('');
+  root.appendChild(lib);
+}
+
+// ---------- header ----------
+function renderHeader(){
+  document.getElementById('handle').textContent=S.handle;
+  const g=growthSummary(); document.getElementById('followersHead').textContent=g.last.count.toLocaleString();
+  const st=streak(); const e=document.getElementById('streak');
+  e.className='streak '+(st.brokenLast?'broken':st.cur?'ok':'zero');
+  document.getElementById('streakN').textContent=st.cur;
+  document.getElementById('streakL').textContent=st.brokenLast?'streak broken':st.cur===1?'week streak':'week streak';
+  const c=document.getElementById('conn'); c.className='conn '+(state.dbState==='on'?'on':state.dbState==='off'?'off':'');
+  c.querySelector('span').textContent=state.dbState==='on'?'saved on this phone':state.dbState==='off'?'storage blocked, export often':'loading';
+}
+
+// ---------- sheet (edit) ----------
+let sheetEl=null;
+function openSheet(id){
+  const s=id?state.slots[id]:{id:'',date:todayISO(),time:'06:45',format:'Reel',lane:'A',pillar:1,title:'',hook:'',angle:'',kind:'EVERGREEN',cta:'',status:'PLANNED',metrics:{}};
+  if(!s)return;
+  closeSheet();
+  const m=s.metrics||{};
+  sheetEl=el('div','sheet-bg');
+  sheetEl.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="Edit slot">
+  <h3>${id?esc(s.title):'New slot'}</h3><div class="sub">${id?esc(s.id)+' &middot; '+fmtShort(s.date)+' '+esc(s.time)+' &middot; '+esc(s.format):'Adds a row to the log and the week view'}</div>
+  ${id?`<div class="small" style="white-space:pre-line">${esc(s.hook)}</div>`:''}
+  <div class="field"><label>Status</label><div class="statusbtns">${['PLANNED','FILMED','POSTED','SKIPPED'].map(k=>`<button class="${k}" data-s="${k}" aria-pressed="${s.status===k}">${k}</button>`).join('')}</div></div>
+  <div class="field" id="skipWrap" ${s.status==='SKIPPED'?'':'hidden'}><label for="fSkip">Skip reason (one word)</label><select id="fSkip"><option value="">choose</option>${['no time','no idea','tech','deliberate'].map(r=>`<option ${s.skipReason===r?'selected':''}>${r}</option>`).join('')}</select></div>
+  ${!id?`<div class="fgrid"><div class="field"><label for="nId">ID</label><input id="nId" placeholder="W5-01"></div><div class="field"><label for="nDate">Date</label><input id="nDate" type="date" value="${s.date}"></div><div class="field"><label for="nTime">Time</label><input id="nTime" value="${s.time}"></div><div class="field"><label for="nFormat">Format</label><select id="nFormat"><option>Reel</option><option>Carousel</option><option>Story</option></select></div><div class="field"><label for="nPillar">Pillar</label><select id="nPillar">${S.pillars.map(p=>`<option value="${p.n}">${p.n} &middot; ${esc(p.short)}</option>`).join('')}</select></div><div class="field"><label for="nKind">Kind</label><select id="nKind"><option>EVERGREEN</option><option>TOPICAL</option></select></div></div><div class="field"><label for="nTitle">Title</label><input id="nTitle"></div><div class="field"><label for="nHook">Hook</label><textarea id="nHook" rows="2"></textarea></div><div class="field"><label for="nCta">CTA</label><input id="nCta"></div>`:''}
+  <h2>Performance, after posting</h2>
+  <div class="fgrid">${[['reach','Reach (accounts)'],['views','Views'],['likes','Likes'],['comments','Comments'],['shares','Shares'],['saves','Saves'],['profileVisits','Profile visits'],['follows','Follows'],['avgWatchPct','Avg watch %']].map(([k,l])=>`<div class="field"><label for="m_${k}">${l}</label><input id="m_${k}" type="number" inputmode="decimal" step="any" placeholder="n/a" value="${m[k]==null?'':esc(m[k])}"></div>`).join('')}</div>
+  <div class="field"><label for="fPostedAt">Posted at (actual)</label><input id="fPostedAt" placeholder="e.g. 2026-09-16 12:34" value="${esc(s.postedAt||'')}"></div>
+  <div class="field"><label for="fNotes">Notes</label><textarea id="fNotes" rows="2">${esc(s.notes||'')}</textarea></div>
+  <div class="actions"><button class="btn" id="shCancel">Cancel</button><button class="btn primary" id="shSave">Save</button></div></div>`;
+  document.body.appendChild(sheetEl);
+  let status=s.status;
+  sheetEl.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{status=b.dataset.s;sheetEl.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.s===status));sheetEl.querySelector('#skipWrap').hidden=status!=='SKIPPED';});
+  sheetEl.addEventListener('click',e=>{if(e.target===sheetEl)closeSheet();});
+  sheetEl.querySelector('#shCancel').onclick=closeSheet;
+  sheetEl.querySelector('#shSave').onclick=async()=>{
+    const q=sel=>sheetEl.querySelector(sel);
+    const metrics={};['reach','views','likes','comments','shares','saves','profileVisits','follows','avgWatchPct'].forEach(k=>{const v=num(q('#m_'+k).value);if(v!=null)metrics[k]=v;});
+    let doc={...s,status,skipReason:status==='SKIPPED'?(q('#fSkip').value||'unstated'):'',metrics,postedAt:q('#fPostedAt').value.trim(),notes:q('#fNotes').value.trim(),updatedAt:new Date().toISOString()};
+    if(!id){doc.id=q('#nId').value.trim();doc.date=q('#nDate').value;doc.time=q('#nTime').value.trim()||'06:45';doc.format=q('#nFormat').value;doc.lane=doc.format==='Reel'?'A':'-';doc.pillar=Number(q('#nPillar').value);doc.kind=q('#nKind').value;doc.title=q('#nTitle').value.trim();doc.hook=q('#nHook').value.trim();doc.cta=q('#nCta').value.trim();doc.angle='';doc.type='';doc.week=weekFor(doc.date).id;if(!doc.id||!doc.date||!doc.title){toast('ID, date and title needed');return;}if(!/^[A-Za-z0-9_\-.~:@+]+$/.test(doc.id)){toast('ID: letters, digits and dashes only');return;}}
+    if(status==='POSTED'&&!doc.postedAt)doc.postedAt=`${doc.date} ${doc.time}`;
+    await saveSlot(doc);
+    closeSheet();
+  };
+}
+function closeSheet(){if(sheetEl){sheetEl.remove();sheetEl=null;}}
+
+// ---------- persistence (on this device) ----------
+let toastT=null;
+function toast(msg){let t=document.querySelector('.toast');if(!t){t=el('div','toast');document.body.appendChild(t);}t.textContent=msg;clearTimeout(toastT);toastT=setTimeout(()=>t.remove(),2600);}
+const KEY='road-to-10k-state-v1';
+function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('road-to-10k',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}catch(e){rej(e);}});}
+async function idbGet(k){try{const d=await idb();return await new Promise((res,rej)=>{const t=d.transaction('kv','readonly').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>rej(t.error);});}catch(e){return undefined;}}
+async function idbSet(k,v){try{const d=await idb();await new Promise((res,rej)=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=res;t.onerror=()=>rej(t.error);});return true;}catch(e){return false;}}
+function snapshot(){return {version:1,app:'road-to-10k',exportedAt:new Date().toISOString(),handle:S.handle,slots:state.slots,growth:state.growth,reviews:state.reviews,meta:state.meta};}
+let persistT=null;
+function persist(){clearTimeout(persistT);persistT=setTimeout(async()=>{const snap=snapshot();const ok=await idbSet(KEY,snap);try{localStorage.setItem(KEY,JSON.stringify(snap));}catch(e){}state.dbState=ok?'on':'off';renderHeader();},150);}
+function applySnapshot(snap,mode){
+  if(!snap||typeof snap!=='object')return 0;let n=0;
+  if(snap.slots&&typeof snap.slots==='object'){const arr=Array.isArray(snap.slots)?snap.slots:Object.values(snap.slots);arr.forEach(d=>{if(!d||!d.id)return;if(mode==='replace'){state.slots[d.id]=d;}else{state.slots[d.id]={...(state.slots[d.id]||{}),...d};}n++;});}
+  if(Array.isArray(snap.growth)){const byDate={};state.growth.forEach(r=>byDate[r.date]=r);snap.growth.forEach(r=>{if(r&&r.date&&r.count!=null)byDate[r.date]=r;});state.growth=Object.values(byDate).sort((a,b)=>a.date<b.date?-1:1);}
+  if(snap.reviews&&typeof snap.reviews==='object'){state.reviews={...state.reviews,...snap.reviews};}
+  if(snap.meta&&typeof snap.meta==='object'){const m=snap.meta;state.meta={...state.meta,...m,stories:{...(state.meta.stories||{}),...(m.stories||{})}};if(Array.isArray(m.weeks)&&m.weeks.length)state.meta.weeks=m.weeks;if(Array.isArray(m.moments)&&m.moments.length)state.meta.moments=m.moments;}
+  if(snap.stories&&typeof snap.stories==='object'){state.meta.stories={...(state.meta.stories||{}),...snap.stories};}
+  if(Array.isArray(snap.weeks)&&snap.weeks.length)state.meta.weeks=snap.weeks;
+  return n;
+}
+async function saveSlot(doc){state.slots[doc.id]=doc;renderAll();persist();toast('Saved on this phone');}
+async function saveGrowth(list){state.growth=list;renderAll();persist();toast('Reading saved');}
+async function connect(){
+  let snap=await idbGet(KEY);
+  if(!snap){try{const raw=localStorage.getItem(KEY);if(raw)snap=JSON.parse(raw);}catch(e){}}
+  if(snap){applySnapshot(snap,'replace');state.dbState='on';}else{state.dbState='on';persist();}
+  renderAll();
+}
+function fileName(){return 'road-to-10k-export-'+todayISO()+'.json';}
+async function exportData(){
+  const text=JSON.stringify(snapshot(),null,1);
+  const blob=new Blob([text],{type:'application/json'});
+  const file=new File([blob],fileName(),{type:'application/json'});
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Road to 10k export'});state.meta.lastExport=todayISO();persist();toast('Shared');return;}}catch(e){if(e&&e.name==='AbortError')return;}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fileName();document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);state.meta.lastExport=todayISO();persist();toast('Downloaded');return;}catch(e){}
+  try{await navigator.clipboard.writeText(text);toast('Copied to clipboard');}catch(e){toast('Export failed');}
+}
+function importText(text){
+  let snap;try{snap=JSON.parse(text);}catch(e){toast('That is not a valid JSON file');return;}
+  if(snap.app&&snap.app!=='road-to-10k'){toast('Not a Road to 10k file');return;}
+  const n=applySnapshot(snap,'merge');state.meta.lastImport=todayISO();renderAll();persist();toast(`Imported ${n} slot${n===1?'':'s'}`);
+}
+function openDataSheet(){
+  closeSheet();
+  const g=state.growth.length;const n=Object.keys(state.slots).length;
+  sheetEl=el('div','sheet-bg');
+  sheetEl.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="Backup and sync">
+  <h3>Backup and sync</h3><div class="sub">Everything lives on this phone. ${n} slots, ${g} follower readings, ${Object.keys(state.reviews).length} reviews.${state.meta.lastExport?' Last export '+fmtDM(state.meta.lastExport)+'.':''}${state.meta.lastImport?' Last import '+fmtDM(state.meta.lastImport)+'.':''}</div>
+  <h2>Export</h2><div class="small">Sunday: share the file into Google Drive, Mortgage Content Machine / Instagram / sync. The weekly review reads it from there.</div>
+  <div class="actions" style="justify-content:flex-start;margin-top:8px"><button class="btn primary" id="exBtn">Export data</button><button class="btn" id="copyBtn">Copy as text</button></div>
+  <h2>Import</h2><div class="small">Monday: open the import file the review left in the same sync folder, or paste its contents.</div>
+  <div class="field"><label for="impFile">Choose file</label><input id="impFile" type="file" accept="application/json,.json"></div>
+  <div class="field"><label for="impText">Or paste JSON</label><textarea id="impText" rows="3" placeholder="{ ... }"></textarea></div>
+  <div class="actions" style="justify-content:flex-start;margin-top:8px"><button class="btn primary" id="impBtn">Import pasted text</button></div>
+  <h2>Danger zone</h2><div class="actions" style="justify-content:flex-start"><button class="btn" id="resetBtn" style="color:var(--bad);border-color:var(--bad)">Reset to the launch plan</button></div>
+  <div class="actions"><button class="btn" id="dsClose">Close</button></div></div>`;
+  document.body.appendChild(sheetEl);
+  sheetEl.addEventListener('click',e=>{if(e.target===sheetEl)closeSheet();});
+  sheetEl.querySelector('#dsClose').onclick=closeSheet;
+  sheetEl.querySelector('#exBtn').onclick=exportData;
+  sheetEl.querySelector('#copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(snapshot()));toast('Copied');}catch(e){toast('Copy failed');}};
+  sheetEl.querySelector('#impFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{importText(String(r.result));closeSheet();};r.readAsText(f);};
+  sheetEl.querySelector('#impBtn').onclick=()=>{const t=sheetEl.querySelector('#impText').value.trim();if(!t){toast('Nothing to import');return;}importText(t);closeSheet();};
+  sheetEl.querySelector('#resetBtn').onclick=()=>{if(!confirm('Replace everything on this phone with the launch plan? Export first if you want to keep your numbers.'))return;state.slots={};PLAN.slots.forEach(s=>state.slots[s.id]={...s,status:'PLANNED',metrics:{}});state.growth=PLAN.growth.slice();state.reviews={};state.meta={};renderAll();persist();closeSheet();toast('Reset');};
+}
+document.getElementById('dataBtn').onclick=openDataSheet;
+
+// ---------- tabs ----------
+function showTab(t){state.tab=t;document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));['week','log','growth','pillars','hooks'].forEach(k=>document.getElementById('tab-'+k).hidden=(k!==t));try{localStorage.setItem('r10k-tab',t);}catch(e){}window.scrollTo({top:0});}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function renderAll(){renderHeader();renderWeek();renderLog();renderGrowth();renderPillars();renderHooks();}
+renderAll();
+try{const t=localStorage.getItem('r10k-tab');if(t)showTab(t);}catch(e){}
+connect();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+})();
+</script>
+</body>
+</html>
