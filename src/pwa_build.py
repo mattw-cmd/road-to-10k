@@ -66,7 +66,7 @@ const KEY='road-to-10k-state-v1';
 function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('road-to-10k',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}catch(e){rej(e);}});}
 async function idbGet(k){try{const d=await idb();return await new Promise((res,rej)=>{const t=d.transaction('kv','readonly').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>rej(t.error);});}catch(e){return undefined;}}
 async function idbSet(k,v){try{const d=await idb();await new Promise((res,rej)=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=res;t.onerror=()=>rej(t.error);});return true;}catch(e){return false;}}
-function snapshot(){return {version:1,app:'road-to-10k',exportedAt:new Date().toISOString(),handle:S.handle,slots:state.slots,growth:state.growth,reviews:state.reviews,meta:state.meta,news:state.news||[]};}
+function snapshot(forExport){return {version:1,app:'road-to-10k',exportedAt:new Date().toISOString(),handle:S.handle,slots:state.slots,growth:state.growth,reviews:state.reviews,meta:state.meta,news:state.news||[],bank:forExport?undefined:(state.bank||[])};}
 let persistT=null;
 function persist(){clearTimeout(persistT);persistT=setTimeout(async()=>{const snap=snapshot();const ok=await idbSet(KEY,snap);try{localStorage.setItem(KEY,JSON.stringify(snap));}catch(e){}state.dbState=ok?'on':'off';renderHeader();},150);}
 function applySnapshot(snap,mode){
@@ -78,8 +78,11 @@ function applySnapshot(snap,mode){
   if(snap.stories&&typeof snap.stories==='object'){state.meta.stories={...(state.meta.stories||{}),...snap.stories};}
   if(Array.isArray(snap.weeks)&&snap.weeks.length)state.meta.weeks=snap.weeks;
   if(Array.isArray(snap.news)){const by={};(state.news||[]).forEach(x=>by[x.id]=x);snap.news.forEach(x=>{if(x&&x.id)by[x.id]={...(by[x.id]||{}),...x};});state.news=Object.values(by);}
+  if(Array.isArray(snap.bank)){mergeBank(snap.bank);}
   return n;
 }
+function mergeBank(items){const by={};(state.bank||[]).forEach(x=>by[x.id]=x);items.forEach(x=>{if(!x||!x.id)return;const prev=by[x.id]||{};const used=Array.from(new Set([...(prev.used||[]),...(x.used||[])])).sort();by[x.id]={...prev,...x,used};});state.bank=Object.values(by);}
+function backfillSlots(){const gk={};(S.groups||[]).forEach(g=>gk[g.pillar]=g.key);Object.values(state.slots).forEach(s=>{if(!s.group&&gk[s.pillar])s.group=gk[s.pillar];if(s.bankId===undefined)s.bankId=null;if(!Array.isArray(s.swapHistory))s.swapHistory=[];});}
 async function saveSlot(doc){state.slots[doc.id]=doc;renderAll();persist();toast('Saved on this phone');}
 async function saveGrowth(list){state.growth=list;renderAll();persist();toast('Reading saved');}
 async function connect(){
@@ -89,11 +92,14 @@ async function connect(){
   // built-in plan sits underneath stored data: new fields shipped with the app (scripts, angles) show up without losing statuses or numbers
   PLAN.slots.forEach(ps=>{const st=state.slots[ps.id]||{};state.slots[ps.id]={...ps,...st,script:(st.script&&(st.script.spoken||st.script.slides))?st.script:ps.script};});
   (S.retiredSlots||[]).forEach(id=>{const st=state.slots[id];if(st&&(st.status||'PLANNED')==='PLANNED'&&!st.updatedAt&&!(st.metrics&&Object.keys(st.metrics).length))delete state.slots[id];});
+  // built-in bank underneath the stored bank: stored `used` dates survive, new items ship with the app
+  {const stored=state.bank||[];state.bank=[];mergeBank(PLAN.bank||[]);mergeBank(stored);}
+  backfillSlots();
   renderAll();
 }
 function fileName(){return 'road-to-10k-export-'+todayISO()+'.json';}
 async function exportData(){
-  const text=JSON.stringify(snapshot(),null,1);
+  const text=JSON.stringify(snapshot(true),null,1);
   const blob=new Blob([text],{type:'application/json'});
   const file=new File([blob],fileName(),{type:'application/json'});
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Road to 10k export'});state.meta.lastExport=todayISO();persist();toast('Shared');return;}}catch(e){if(e&&e.name==='AbortError')return;}
@@ -110,7 +116,7 @@ function openDataSheet(){
   const g=state.growth.length;const n=Object.keys(state.slots).length;
   sheetEl=el('div','sheet-bg');
   sheetEl.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="Backup and sync">
-  <h3>Backup and sync</h3><div class="sub">Everything lives on this phone. ${n} slots, ${g} follower readings, ${Object.keys(state.reviews).length} reviews.${state.meta.lastExport?' Last export '+fmtDM(state.meta.lastExport)+'.':''}${state.meta.lastImport?' Last import '+fmtDM(state.meta.lastImport)+'.':''}</div>
+  <h3>Backup and sync</h3><div class="sub">Everything lives on this phone. ${n} slots, ${g} follower readings, ${Object.keys(state.reviews).length} reviews, ${(state.bank||[]).length} bank items (the bank stays on the phone and is not exported).${state.meta.lastExport?' Last export '+fmtDM(state.meta.lastExport)+'.':''}${state.meta.lastImport?' Last import '+fmtDM(state.meta.lastImport)+'.':''}</div>
   <h2>Export</h2><div class="small">Sunday: share the file into Google Drive, Mortgage Content Machine / Instagram / sync. The weekly review reads it from there.</div>
   <div class="actions" style="justify-content:flex-start;margin-top:8px"><button class="btn primary" id="exBtn">Export data</button><button class="btn" id="copyBtn">Copy as text</button></div>
   <h2>Import</h2><div class="small">Monday: open the import file the review left in the same sync folder, or paste its contents.</div>
@@ -123,10 +129,10 @@ function openDataSheet(){
   sheetEl.addEventListener('click',e=>{if(e.target===sheetEl)closeSheet();});
   sheetEl.querySelector('#dsClose').onclick=closeSheet;
   sheetEl.querySelector('#exBtn').onclick=exportData;
-  sheetEl.querySelector('#copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(snapshot()));toast('Copied');}catch(e){toast('Copy failed');}};
+  sheetEl.querySelector('#copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(snapshot(true)));toast('Copied');}catch(e){toast('Copy failed');}};
   sheetEl.querySelector('#impFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{importText(String(r.result));closeSheet();};r.readAsText(f);};
   sheetEl.querySelector('#impBtn').onclick=()=>{const t=sheetEl.querySelector('#impText').value.trim();if(!t){toast('Nothing to import');return;}importText(t);closeSheet();};
-  sheetEl.querySelector('#resetBtn').onclick=()=>{if(!confirm('Replace everything on this phone with the launch plan? Export first if you want to keep your numbers.'))return;state.slots={};PLAN.slots.forEach(s=>state.slots[s.id]={...s,status:'PLANNED',metrics:{}});state.growth=PLAN.growth.slice();state.reviews={};state.meta={};state.news=[];renderAll();persist();closeSheet();toast('Reset');};
+  sheetEl.querySelector('#resetBtn').onclick=()=>{if(!confirm('Replace everything on this phone with the launch plan? Export first if you want to keep your numbers.'))return;state.slots={};PLAN.slots.forEach(s=>state.slots[s.id]={...s,status:'PLANNED',metrics:{}});state.growth=PLAN.growth.slice();state.reviews={};state.meta={};state.news=[];state.bank=[];mergeBank(PLAN.bank||[]);backfillSlots();renderAll();persist();closeSheet();toast('Reset');};
 }
 document.getElementById('dataBtn').onclick=openDataSheet;
 
