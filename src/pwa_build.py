@@ -13,6 +13,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 plan = json.load(open(os.path.join(HERE, "plan.json"), encoding="utf-8"))
 # same text patches as build.py
 for s in plan["slots"]:
+    if not s.get("angle"):
+        continue
     if s["id"] == "W4-02":
         s["angle"] = s["angle"].replace("Three rises this year did more", "This year's rate rises did more")
     if s["id"] == "W2-06":
